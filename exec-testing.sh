@@ -1,6 +1,7 @@
 ####################################################################################################################################################################################
 ## RX and TX only
 ## https://doc.dpdk.org/guides/testpmd_app_ug/testpmd_funcs.html
+## https://www.intel.com/content/www/us/en/developer/articles/technical/testing-dpdk-performance-and-features-with-testpmd.html#:~:text=Forwarding%20Modes&text=It%20is%20the%20most%20common,reception%20and%20transmission%20if%20required.
 ####################################################################################################################################################################################
 ## TXONLY
 ## ./build/app/dpdk-testpmd -l 1,2,97,98 -n 4 -a 02:00.5 --file-prefix sigitp-dpdk-test --socket-mem=1024,0 --proc-type=auto -- --nb-cores=3 --rxq=4 --txq=4 -i --forward-mode=mac --eth-peer=0,7e:2b:33:59:0b:2e
