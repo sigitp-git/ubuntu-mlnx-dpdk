@@ -287,7 +287,7 @@ testpmd>
 ## No-FWD-Mode at start
 ####################################################################################################################################################################################
 ## Pod1
-root@mlnx-dpdk-vlan100-node1:/usr/src/dpdk-21.11-rc4# ./build/app/dpdk-testpmd -l 1,2,97,98 -n 4 -a 02:00.5 --file-prefix kinara-dpdk-test --socket-mem=1024,0 --proc-type=auto -- --nb-cores=3 --rxq=4 --txq=4 -i --eth-peer=0,7e:2b:33:59:0b:2e
+root@mlnx-dpdk-vlan100-node1:/usr/src/dpdk-21.11-rc4# ./build/app/dpdk-testpmd -l 1,2,97,98 -n 4 -a 02:00.5 --file-prefix kinara-dpdk-test --socket-mem=1024,0 --proc-type=auto -- --nb-cores=3 --rxq=4 --txq=4 -i --eth-peer=0,7e:2b:33:59:0b:2e --port-topology=loop
 EAL: Detected CPU lcores: 128
 EAL: Detected NUMA nodes: 2
 EAL: Auto-detected process type: PRIMARY
@@ -322,7 +322,7 @@ Logical Core 98 (socket 0) forwards packets on 2 streams:
 testpmd> 
 
 ## Pod1
-root@mlnx-dpdk-vlan100-node2:/usr/src/dpdk-21.11-rc4# ./build/app/dpdk-testpmd -l 2,3,98,99 -n 4 -a 02:00.2 --file-prefix kinara-dpdk-test --socket-mem=1024,0 --proc-type=auto -- --nb-cores=3 --rxq=4 --txq=4 -i --eth-peer=0,aa:1e:c6:17:9b:fc
+root@mlnx-dpdk-vlan100-node2:/usr/src/dpdk-21.11-rc4# ./build/app/dpdk-testpmd -l 2,3,98,99 -n 4 -a 02:00.2 --file-prefix kinara-dpdk-test --socket-mem=1024,0 --proc-type=auto -- --nb-cores=3 --rxq=4 --txq=4 -i --eth-peer=0,aa:1e:c6:17:9b:fc --port-topology=loop
 EAL: Detected CPU lcores: 128
 EAL: Detected NUMA nodes: 2
 EAL: Auto-detected process type: PRIMARY
