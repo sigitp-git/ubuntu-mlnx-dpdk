@@ -308,6 +308,17 @@ Configuring Port 0 (socket 0)
 Port 0: AA:1E:C6:17:9B:FC
 Checking link statuses...
 Done
+
+testpmd> show config fwd
+io packet forwarding - ports=1 - cores=3 - streams=4 - NUMA support enabled, MP allocation mode: native
+Logical Core 2 (socket 0) forwards packets on 1 streams:
+  RX P=0/Q=0 (socket 0) -> TX P=0/Q=0 (socket 0) peer=7E:2B:33:59:0B:2E
+Logical Core 97 (socket 0) forwards packets on 1 streams:
+  RX P=0/Q=1 (socket 0) -> TX P=0/Q=1 (socket 0) peer=7E:2B:33:59:0B:2E
+Logical Core 98 (socket 0) forwards packets on 2 streams:
+  RX P=0/Q=2 (socket 0) -> TX P=0/Q=2 (socket 0) peer=7E:2B:33:59:0B:2E
+  RX P=0/Q=3 (socket 0) -> TX P=0/Q=3 (socket 0) peer=7E:2B:33:59:0B:2E
+
 testpmd> 
 
 ## Pod1
@@ -332,4 +343,15 @@ Configuring Port 0 (socket 0)
 Port 0: 7E:2B:33:59:0B:2E
 Checking link statuses...
 Done
+
+testpmd> show config fwd
+io packet forwarding - ports=1 - cores=3 - streams=4 - NUMA support enabled, MP allocation mode: native
+Logical Core 3 (socket 0) forwards packets on 1 streams:
+  RX P=0/Q=0 (socket 0) -> TX P=0/Q=0 (socket 0) peer=AA:1E:C6:17:9B:FC
+Logical Core 98 (socket 0) forwards packets on 1 streams:
+  RX P=0/Q=1 (socket 0) -> TX P=0/Q=1 (socket 0) peer=AA:1E:C6:17:9B:FC
+Logical Core 99 (socket 0) forwards packets on 2 streams:
+  RX P=0/Q=2 (socket 0) -> TX P=0/Q=2 (socket 0) peer=AA:1E:C6:17:9B:FC
+  RX P=0/Q=3 (socket 0) -> TX P=0/Q=3 (socket 0) peer=AA:1E:C6:17:9B:FC
+
 testpmd> 
