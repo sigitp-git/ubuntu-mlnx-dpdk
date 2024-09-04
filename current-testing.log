@@ -1,4 +1,23 @@
 ## POD1-NODE1
+sh-5.2$ sudo cat /var/lib/kubelet/cpu_manager_state | jq
+{
+  "policyName": "static",
+  "defaultCpuSet": "0,3-47,49-95,99-191",
+  "entries": {
+    "830f93db-aff7-4dbb-9310-9f41a4d3a08a": {
+      "ubuntu-frr": "96"
+    },
+    "8c06a328-ca2c-4a86-865e-3bde46956cc7": {
+      "ubuntu-netutils": "48"
+    },
+    "a5cd2c1a-4f17-49b8-8b23-aa4b3df44cba": {
+      "ubuntu-mlnx-dpdk": "1-2,97-98"
+    }
+  },
+  "checksum": 574156616
+}
+sh-5.2$ 
+
 root@mlnx-dpdk-vlan100-node1:/usr/src/dpdk-21.11-rc4# ethtool -i net1
 driver: mlx5_core
 version: 6.1.106-116.188.amzn2023.x86_64
@@ -27,6 +46,26 @@ root@mlnx-dpdk-vlan100-node1:/usr/src/dpdk-21.11-rc4#
 root@mlnx-dpdk-vlan100-node1:/usr/src/dpdk-21.11-rc4# ./build/app/dpdk-testpmd -l 1,2,97,98 -n 4 -a 02:00.3 --file-prefix sigitp-dpdk-test --socket-mem=4096,4096 --proc-type=auto -- --nb-cores=3 --rxq=4 --txq=4 -i --forward-mode=txonly --eth-peer=0,7e:2b:33:59:0b:2e   
 
 ## POD1-NODE2
+sh-5.2$ sudo cat /var/lib/kubelet/cpu_manager_state | jq
+
+{
+  "policyName": "static",
+  "defaultCpuSet": "0,3-47,49-95,99-191",
+  "entries": {
+    "8d77362a-3a53-4693-af29-cd7a60333d5d": {
+      "ubuntu-frr": "96"
+    },
+    "a44f2223-3ab5-4b09-8e50-62e9b3238605": {
+      "ubuntu-netutils": "48"
+    },
+    "be23d617-ce37-4b59-9d4f-f9cf19faca59": {
+      "ubuntu-mlnx-dpdk": "1-2,97-98"
+    }
+  },
+  "checksum": 1533520773
+}
+sh-5.2$ 
+
 root@mlnx-dpdk-vlan100-node2:/usr/src/dpdk-21.11-rc4# ethtool -i net1
 driver: mlx5_core
 version: 6.1.106-116.188.amzn2023.x86_64
