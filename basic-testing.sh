@@ -76,7 +76,7 @@ testpmd> show port stats 0
 testpmd> 
 
 ## RXONLY
-## ./build/app/dpdk-testpmd -l 2,3,98,99 -n 4 -a 02:00.2 --file-prefix sigitp-dpdk-test --socket-mem=1024,0 --proc-type=auto -- --nb-cores=3 --rxq=4 --txq=4 -i --forward-mode=mac --eth-peer=0,aa:1e:c6:17:9b:fc
+## ./build/app/dpdk-testpmd -l 2,3,98,99 -n 4 -a 02:00.2 --file-prefix sigitp-dpdk-test --socket-mem=4096,4096 --proc-type=auto -- --nb-cores=3 --rxq=4 --txq=4 -i --forward-mode=mac --eth-peer=0,aa:1e:c6:17:9b:fc
 testpmd> show port summary all
 Number of available ports: 1
 Port MAC Address       Name         Driver         Status   Link
