@@ -5,6 +5,12 @@
 ####################################################################################################################################################################################
 ## TXONLY
 ## ./build/app/dpdk-testpmd -l 1,2,97,98 -n 4 -a 02:00.5 --file-prefix sigitp-dpdk-test --socket-mem=1024,0 --proc-type=auto -- --nb-cores=3 --rxq=4 --txq=4 -i --forward-mode=mac --eth-peer=0,7e:2b:33:59:0b:2e
+testpmd> show port summary all
+Number of available ports: 1
+Port MAC Address       Name         Driver         Status   Link
+0    AA:1E:C6:17:9B:FC 02:00.5      mlx5_pci       up       200 Gbps
+testpmd> 
+
 testpmd> show config rxtx
   txonly packet forwarding packets/burst=32
   packet len=64 - nb packet segments=1
@@ -70,6 +76,12 @@ testpmd>
 
 ## RXONLY
 ## ./build/app/dpdk-testpmd -l 2,3,98,99 -n 4 -a 02:00.2 --file-prefix sigitp-dpdk-test --socket-mem=1024,0 --proc-type=auto -- --nb-cores=3 --rxq=4 --txq=4 -i --forward-mode=mac --eth-peer=0,aa:1e:c6:17:9b:fc
+testpmd> show port summary all
+Number of available ports: 1
+Port MAC Address       Name         Driver         Status   Link
+0    7E:2B:33:59:0B:2E 02:00.2      mlx5_pci       up       200 Gbps
+testpmd> 
+
 testpmd> show config rxtx
   rxonly packet forwarding packets/burst=32
   nb forwarding cores=3 - nb forwarding ports=1
