@@ -67,6 +67,46 @@ Checking link statuses...
 Done
 testpmd> 
 
+testpmd> start
+txonly packet forwarding - ports=1 - cores=3 - streams=4 - NUMA support enabled, MP allocation mode: native
+Logical Core 2 (socket 0) forwards packets on 1 streams:
+  RX P=0/Q=0 (socket 0) -> TX P=0/Q=0 (socket 0) peer=26:DE:45:DF:09:80
+Logical Core 97 (socket 0) forwards packets on 1 streams:
+  RX P=0/Q=1 (socket 0) -> TX P=0/Q=1 (socket 0) peer=26:DE:45:DF:09:80
+Logical Core 98 (socket 0) forwards packets on 2 streams:
+  RX P=0/Q=2 (socket 0) -> TX P=0/Q=2 (socket 0) peer=26:DE:45:DF:09:80
+  RX P=0/Q=3 (socket 0) -> TX P=0/Q=3 (socket 0) peer=26:DE:45:DF:09:80
+
+  txonly packet forwarding packets/burst=32
+  packet len=64 - nb packet segments=1
+  nb forwarding cores=3 - nb forwarding ports=1
+  port 0: RX queue number: 4 Tx queue number: 4
+    Rx offloads=0x0 Tx offloads=0x10000
+    RX queue: 0
+      RX desc=2048 - RX free threshold=64
+      RX threshold registers: pthresh=0 hthresh=0  wthresh=0
+      RX Offloads=0x0
+    TX queue: 0
+      TX desc=2048 - TX free threshold=0
+      TX threshold registers: pthresh=0 hthresh=0  wthresh=0
+      TX offloads=0x10000 - TX RS bit threshold=0
+
+testpmd> show port stats 0
+
+  ######################## NIC statistics for port 0  ########################
+  RX-packets: 0          RX-missed: 0          RX-bytes:  0
+  RX-errors: 0
+  RX-nombuf:  0         
+  TX-packets: 11342509568 TX-errors: 0          TX-bytes:  725920612352
+
+  Throughput (since last show)
+  Rx-pps:            0          Rx-bps:            0
+  Tx-pps:    129431263          Tx-bps:  66268806824
+  ############################################################################
+testpmd> 
+
+##########################################################################################
+
 ## POD1-NODE2
 sh-5.2$ sudo cat /var/lib/kubelet/cpu_manager_state | jq
 
@@ -135,4 +175,41 @@ Configuring Port 0 (socket 0)
 Port 0: 26:DE:45:DF:09:80
 Checking link statuses...
 Done
+testpmd> 
+
+testpmd> start
+rxonly packet forwarding - ports=1 - cores=3 - streams=4 - NUMA support enabled, MP allocation mode: native
+Logical Core 2 (socket 0) forwards packets on 1 streams:
+  RX P=0/Q=0 (socket 0) -> TX P=0/Q=0 (socket 0) peer=26:A4:02:96:2F:42
+Logical Core 97 (socket 0) forwards packets on 1 streams:
+  RX P=0/Q=1 (socket 0) -> TX P=0/Q=1 (socket 0) peer=26:A4:02:96:2F:42
+Logical Core 98 (socket 0) forwards packets on 2 streams:
+  RX P=0/Q=2 (socket 0) -> TX P=0/Q=2 (socket 0) peer=26:A4:02:96:2F:42
+  RX P=0/Q=3 (socket 0) -> TX P=0/Q=3 (socket 0) peer=26:A4:02:96:2F:42
+
+  rxonly packet forwarding packets/burst=32
+  nb forwarding cores=3 - nb forwarding ports=1
+  port 0: RX queue number: 4 Tx queue number: 4
+    Rx offloads=0x0 Tx offloads=0x10000
+    RX queue: 0
+      RX desc=2048 - RX free threshold=64
+      RX threshold registers: pthresh=0 hthresh=0  wthresh=0
+      RX Offloads=0x0
+    TX queue: 0
+      TX desc=2048 - TX free threshold=0
+      TX threshold registers: pthresh=0 hthresh=0  wthresh=0
+      TX offloads=0x10000 - TX RS bit threshold=0
+
+testpmd> show port stats 0
+
+  ######################## NIC statistics for port 0  ########################
+  RX-packets: 3085458345 RX-missed: 869        RX-bytes:  197469334080
+  RX-errors: 0
+  RX-nombuf:  0         
+  TX-packets: 0          TX-errors: 0          TX-bytes:  0
+
+  Throughput (since last show)
+  Rx-pps:     36194225          Rx-bps:  18531443240
+  Tx-pps:            0          Tx-bps:            0
+  ############################################################################
 testpmd> 
