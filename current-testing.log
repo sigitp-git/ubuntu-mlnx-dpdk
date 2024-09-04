@@ -43,7 +43,29 @@ net1: flags=4419<UP,BROADCAST,RUNNING,PROMISC,MULTICAST>  mtu 1500
 
 root@mlnx-dpdk-vlan100-node1:/usr/src/dpdk-21.11-rc4# 
 
-root@mlnx-dpdk-vlan100-node1:/usr/src/dpdk-21.11-rc4# ./build/app/dpdk-testpmd -l 1,2,97,98 -n 4 -a 02:00.3 --file-prefix sigitp-dpdk-test --socket-mem=4096,4096 --proc-type=auto -- --nb-cores=3 --rxq=4 --txq=4 -i --forward-mode=txonly --eth-peer=0,7e:2b:33:59:0b:2e   
+root@mlnx-dpdk-vlan100-node1:/usr/src/dpdk-21.11-rc4# ./build/app/dpdk-testpmd -l 1,2,97,98 -n 4 -a 02:00.3 --file-prefix sigitp-dpdk-test --socket-mem=4096,4096 --proc-type=auto -- --nb-cores=3 --rxq=4 --txq=4 -i --forward-mode=txonly --eth-peer=0,26:de:45:df:09:80   
+EAL: Detected CPU lcores: 128
+EAL: Detected NUMA nodes: 2
+EAL: Auto-detected process type: PRIMARY
+EAL: Detected static linkage of DPDK
+EAL: Multi-process socket /var/run/dpdk/sigitp-dpdk-test/mp_socket
+EAL: Selected IOVA mode 'PA'
+EAL: No available 2048 kB hugepages reported
+EAL: VFIO support initialized
+EAL: Probe PCI driver: mlx5_pci (15b3:101e) device: 0000:02:00.3 (socket 0)
+TELEMETRY: No legacy callbacks, legacy socket not created
+Interactive-mode selected
+Set txonly packet forwarding mode
+testpmd: create a new mbuf pool <mb_pool_0>: n=171456, size=2176, socket=0
+testpmd: preferred mempool ops selected: ring_mp_mc
+
+Warning! port-topology=paired and odd forward ports number, the last port will pair with itself.
+
+Configuring Port 0 (socket 0)
+Port 0: 26:A4:02:96:2F:42
+Checking link statuses...
+Done
+testpmd> 
 
 ## POD1-NODE2
 sh-5.2$ sudo cat /var/lib/kubelet/cpu_manager_state | jq
@@ -91,3 +113,26 @@ net1: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1500
 
 root@mlnx-dpdk-vlan100-node2:/usr/src/dpdk-21.11-rc4# 
 
+root@mlnx-dpdk-vlan100-node2:/usr/src/dpdk-21.11-rc4# ./build/app/dpdk-testpmd -l 1,2,97,98 -n 4 -a 02:00.6 --file-prefix sigitp-dpdk-test --socket-mem=4096,4096 --proc-type=auto -- --nb-cores=3 --rxq=4 --txq=4 -i --forward-mode=rxonly --eth-peer=0,26:a4:02:96:2f:42   
+EAL: Detected CPU lcores: 128
+EAL: Detected NUMA nodes: 2
+EAL: Auto-detected process type: PRIMARY
+EAL: Detected static linkage of DPDK
+EAL: Multi-process socket /var/run/dpdk/sigitp-dpdk-test/mp_socket
+EAL: Selected IOVA mode 'PA'
+EAL: No available 2048 kB hugepages reported
+EAL: VFIO support initialized
+EAL: Probe PCI driver: mlx5_pci (15b3:101e) device: 0000:02:00.6 (socket 0)
+TELEMETRY: No legacy callbacks, legacy socket not created
+Interactive-mode selected
+Set rxonly packet forwarding mode
+testpmd: create a new mbuf pool <mb_pool_0>: n=171456, size=2176, socket=0
+testpmd: preferred mempool ops selected: ring_mp_mc
+
+Warning! port-topology=paired and odd forward ports number, the last port will pair with itself.
+
+Configuring Port 0 (socket 0)
+Port 0: 26:DE:45:DF:09:80
+Checking link statuses...
+Done
+testpmd> 
