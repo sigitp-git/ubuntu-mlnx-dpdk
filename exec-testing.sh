@@ -282,3 +282,54 @@ testpmd> show fwd stats all
   TX-packets: 51399473216    TX-dropped: 0             TX-total: 51399473216
   ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 testpmd> 
+
+####################################################################################################################################################################################
+## No-FWD-Mode at start
+####################################################################################################################################################################################
+## Pod1
+root@mlnx-dpdk-vlan100-node1:/usr/src/dpdk-21.11-rc4# ./build/app/dpdk-testpmd -l 1,2,97,98 -n 4 -a 02:00.5 --file-prefix kinara-dpdk-test --socket-mem=1024,0 --proc-type=auto -- --nb-cores=3 --rxq=4 --txq=4 -i --eth-peer=0,7e:2b:33:59:0b:2e
+EAL: Detected CPU lcores: 128
+EAL: Detected NUMA nodes: 2
+EAL: Auto-detected process type: PRIMARY
+EAL: Detected static linkage of DPDK
+EAL: Multi-process socket /var/run/dpdk/kinara-dpdk-test/mp_socket
+EAL: Selected IOVA mode 'PA'
+EAL: No available 2048 kB hugepages reported
+EAL: VFIO support initialized
+EAL: Probe PCI driver: mlx5_pci (15b3:101e) device: 0000:02:00.5 (socket 0)
+TELEMETRY: No legacy callbacks, legacy socket not created
+Interactive-mode selected
+testpmd: create a new mbuf pool <mb_pool_0>: n=171456, size=2176, socket=0
+testpmd: preferred mempool ops selected: ring_mp_mc
+
+Warning! port-topology=paired and odd forward ports number, the last port will pair with itself.
+
+Configuring Port 0 (socket 0)
+Port 0: AA:1E:C6:17:9B:FC
+Checking link statuses...
+Done
+testpmd> 
+
+## Pod1
+root@mlnx-dpdk-vlan100-node2:/usr/src/dpdk-21.11-rc4# ./build/app/dpdk-testpmd -l 2,3,98,99 -n 4 -a 02:00.2 --file-prefix kinara-dpdk-test --socket-mem=1024,0 --proc-type=auto -- --nb-cores=3 --rxq=4 --txq=4 -i --eth-peer=0,aa:1e:c6:17:9b:fc
+EAL: Detected CPU lcores: 128
+EAL: Detected NUMA nodes: 2
+EAL: Auto-detected process type: PRIMARY
+EAL: Detected static linkage of DPDK
+EAL: Multi-process socket /var/run/dpdk/kinara-dpdk-test/mp_socket
+EAL: Selected IOVA mode 'PA'
+EAL: No available 2048 kB hugepages reported
+EAL: VFIO support initialized
+EAL: Probe PCI driver: mlx5_pci (15b3:101e) device: 0000:02:00.2 (socket 0)
+TELEMETRY: No legacy callbacks, legacy socket not created
+Interactive-mode selected
+testpmd: create a new mbuf pool <mb_pool_0>: n=171456, size=2176, socket=0
+testpmd: preferred mempool ops selected: ring_mp_mc
+
+Warning! port-topology=paired and odd forward ports number, the last port will pair with itself.
+
+Configuring Port 0 (socket 0)
+Port 0: 7E:2B:33:59:0B:2E
+Checking link statuses...
+Done
+testpmd> 
