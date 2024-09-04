@@ -5,7 +5,7 @@
 ## mlx5* is using bifurcated driver model: https://doc.dpdk.org/guides/linux_gsg/linux_drivers.html#bifurcated-driver
 ####################################################################################################################################################################################
 ## TXONLY
-## ./build/app/dpdk-testpmd -l 1,2,97,98 -n 4 -a 02:00.5 --file-prefix sigitp-dpdk-test --socket-mem=1024,0 --proc-type=auto -- --nb-cores=3 --rxq=4 --txq=4 -i --forward-mode=mac --eth-peer=0,7e:2b:33:59:0b:2e
+## ./build/app/dpdk-testpmd -l 1,2,97,98 -n 4 -a 02:00.5 --file-prefix sigitp-dpdk-test --socket-mem=4096,4096 --proc-type=auto -- --nb-cores=3 --rxq=4 --txq=4 -i --forward-mode=txonly --eth-peer=0,7e:2b:33:59:0b:2e
 testpmd> show port summary all
 Number of available ports: 1
 Port MAC Address       Name         Driver         Status   Link
