@@ -70,7 +70,13 @@ Configuring Port 0 (socket 0)
 Port 0: 26:A4:02:96:2F:42
 Checking link statuses...
 Done
-testpmd> 
+testpmd>
+
+testpmd> show port summary all
+Number of available ports: 1
+Port MAC Address       Name         Driver         Status   Link
+0    26:A4:02:96:2F:42 02:00.3      mlx5_pci       up       200 Gbps
+testpmd> stop
 
 testpmd> start
 txonly packet forwarding - ports=1 - cores=3 - streams=4 - NUMA support enabled, MP allocation mode: native
@@ -233,6 +239,11 @@ Port 0: 26:DE:45:DF:09:80
 Checking link statuses...
 Done
 testpmd> 
+
+testpmd> show port summary all
+Number of available ports: 1
+Port MAC Address       Name         Driver         Status   Link
+0    26:DE:45:DF:09:80 02:00.6      mlx5_pci       up       200 Gbps
 
 testpmd> start
 rxonly packet forwarding - ports=1 - cores=3 - streams=4 - NUMA support enabled, MP allocation mode: native
