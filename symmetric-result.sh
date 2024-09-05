@@ -196,7 +196,6 @@ net1: flags=4419<UP,BROADCAST,RUNNING,PROMISC,MULTICAST>  mtu 1500
 root@mlnx-dpdk-vlan100-node2:/usr/src/dpdk-21.11-rc4# 
 
 ./build/app/dpdk-testpmd -l 1,2,97,98 --a 02:00.6 --file-prefix sigitp-dpdk-test --socket-mem=4096,4096 --proc-type=auto -- --nb-cores=3 --rxq=4 --txq=4 -i --forward-mode=rxonly --stats-period 5
-./build/app/dpdk-testpmd -l 1,2,97,98 --a 02:00.6 --file-prefix sigitp-dpdk-test --socket-mem=4096,4096 --proc-type=auto -- --nb-cores=3 --rxq=4 --txq=4 -i --forward-mode=rxonly --eth-peer=0,26:a4:02:96:2f:42 --stats-period 5
 
 root@mlnx-dpdk-vlan100-node2:/usr/src/dpdk-21.11-rc4# ./build/app/dpdk-testpmd -l 1,2,97,98 --a 02:00.6 --file-prefix sigitp-dpdk-test --socket-mem=4096,4096 --proc-type=auto -- --nb-cores=3 --rxq=4 --txq=4 -i --forward-mode=rxonly --stats-period 5
 EAL: Detected CPU lcores: 128
@@ -287,3 +286,7 @@ Waiting for lcores to finish...
 
 Done.
 testpmd> 
+
+NOTE:
+- adding --eth-peer=0,26:a4:02:96:2f:42 (source MAC address, TX Pod) for the RX provides similar result
+./build/app/dpdk-testpmd -l 1,2,97,98 --a 02:00.6 --file-prefix sigitp-dpdk-test --socket-mem=4096,4096 --proc-type=auto -- --nb-cores=3 --rxq=4 --txq=4 -i --forward-mode=rxonly --eth-peer=0,26:a4:02:96:2f:42 --stats-period 5
