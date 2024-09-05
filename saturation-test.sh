@@ -281,3 +281,44 @@ testpmd> show port stats 0
   Tx-pps:            0          Tx-bps:            0
   ############################################################################
 testpmd> 
+
+## NVIDIA report
+./build/app/dpdk-testpmd -l 49-56,145-152 -n 6 -a 0001:16:01.0,mprq_en=1,rxqs_min_mprq=1,mprq_log_stride_num=9,txq_inline_mpw=128,rxq_pkt_pad_en=1 --file-prefix sigitp-dpdk-test --socket-mem=4096,4096 --proc-type=auto -- --mbcache=512 --burst=64 --nb-cores=15 --rxq=15 --txq=15 -i --rxd=8192 --txd=8192 --forward-mode=rxonly --eth-peer=0,12:e7:4c:8d:ce:86 --stats-period 5
+
+root@mlnx-dpdk-dsf-node2:/usr/src/dpdk-21.11-rc4# ./build/app/dpdk-testpmd -l 49-56,145-152 -n 6 -a 0001:16:01.0,mprq_en=1,rxqs_min_mprq=1,mprq_log_stride_num=9,txq_inline_mpw=128,rxq_pkt_pad_en=1 --file-prefix sigitp-dpdk-test --socket-mem=4096,4096 --proc-type=auto -- --mbcache=512 --burst=64 --nb-cores=15 --rxq=15 --txq=15 -i --rxd=8192 --txd=8192 --forward-mode=rxonly --eth-peer=0,12:e7:4c:8d:ce:86 --stats-period 5
+EAL: Detected CPU lcores: 191
+EAL: Detected NUMA nodes: 2
+EAL: Auto-detected process type: PRIMARY
+EAL: Detected static linkage of DPDK
+EAL: Multi-process socket /var/run/dpdk/sigitp-dpdk-test/mp_socket
+EAL: Selected IOVA mode 'PA'
+EAL: No available 2048 kB hugepages reported
+EAL: Probe PCI driver: mlx5_pci (15b3:101e) device: 0001:16:01.0 (socket 1)
+TELEMETRY: No legacy callbacks, legacy socket not created
+Interactive-mode selected
+Set rxonly packet forwarding mode
+testpmd: create a new mbuf pool <mb_pool_1>: n=393216, size=2176, socket=1
+testpmd: preferred mempool ops selected: ring_mp_mc
+
+Warning! port-topology=paired and odd forward ports number, the last port will pair with itself.
+
+Configuring Port 0 (socket 1)
+mlx5_net: adjust txq_inline_max (290->204) due to large Tx queue on port 0
+mlx5_net: adjust txq_inline_max (290->204) due to large Tx queue on port 0
+mlx5_net: adjust txq_inline_max (290->204) due to large Tx queue on port 0
+mlx5_net: adjust txq_inline_max (290->204) due to large Tx queue on port 0
+mlx5_net: adjust txq_inline_max (290->204) due to large Tx queue on port 0
+mlx5_net: adjust txq_inline_max (290->204) due to large Tx queue on port 0
+mlx5_net: adjust txq_inline_max (290->204) due to large Tx queue on port 0
+mlx5_net: adjust txq_inline_max (290->204) due to large Tx queue on port 0
+mlx5_net: adjust txq_inline_max (290->204) due to large Tx queue on port 0
+mlx5_net: adjust txq_inline_max (290->204) due to large Tx queue on port 0
+mlx5_net: adjust txq_inline_max (290->204) due to large Tx queue on port 0
+mlx5_net: adjust txq_inline_max (290->204) due to large Tx queue on port 0
+mlx5_net: adjust txq_inline_max (290->204) due to large Tx queue on port 0
+mlx5_net: adjust txq_inline_max (290->204) due to large Tx queue on port 0
+mlx5_net: adjust txq_inline_max (290->204) due to large Tx queue on port 0
+Port 0: EE:2A:47:DE:E1:EB
+Checking link statuses...
+Done
+testpmd> 
