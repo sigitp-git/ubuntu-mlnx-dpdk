@@ -1,3 +1,13 @@
+## Recompile DPDK to use more than 128 vCPU
+## edit
+./x86/meson.build:74:dpdk_conf.set('RTE_MAX_LCORE', 128)
+## to become
+./x86/meson.build:74:dpdk_conf.set('RTE_MAX_LCORE', 191)
+
+## then rebuild
+root@mlnx-dpdk-dsf-node1:/usr/src/dpdk-21.11-rc4# meson build
+root@mlnx-dpdk-dsf-node1:/usr/src/dpdk-21.11-rc4# ninja -C build
+
 ##############################################################################################################################################################################
 ##############################################################################################################################################################################
 TX POD
