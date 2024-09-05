@@ -67,6 +67,29 @@ root@mlnx-dpdk-dsf-node1:/usr/src/dpdk-21.11-rc4#
 
 ./build/app/dpdk-testpmd -l 49-56,145-152 -n 4 -a 0001:16:00.3 --file-prefix sigitp-dpdk-test --socket-mem=4096,4096 --proc-type=auto -- --nb-cores=15 --rxq=4 --txq=4 -i --forward-mode=txonly --txonly-multi-flow --tx-ip=169.10.1.4,169.10.1.5 --eth-peer=0,ee:2a:47:de:e1:eb
 
+root@mlnx-dpdk-dsf-node1:/usr/src/dpdk-21.11-rc4# ./build/app/dpdk-testpmd -l 49-56,145-152 -n 4 -a 0001:16:00.3 --file-prefix sigitp-dpdk-test --socket-mem=4096,4096 --proc-type=auto -- --nb-cores=15 --rxq=4 --txq=4 -i --forward-mode=txonly --txonly-multi-flow --tx-ip=169.10.1.4,169.10.1.5 --eth-peer=0,ee:2a:47:de:e1:eb
+EAL: Detected CPU lcores: 191
+EAL: Detected NUMA nodes: 2
+EAL: Auto-detected process type: PRIMARY
+EAL: Detected static linkage of DPDK
+EAL: Multi-process socket /var/run/dpdk/sigitp-dpdk-test/mp_socket
+EAL: Selected IOVA mode 'PA'
+EAL: No available 2048 kB hugepages reported
+EAL: Probe PCI driver: mlx5_pci (15b3:101e) device: 0001:16:00.3 (socket 1)
+TELEMETRY: No legacy callbacks, legacy socket not created
+Interactive-mode selected
+Set txonly packet forwarding mode
+testpmd: create a new mbuf pool <mb_pool_1>: n=267456, size=2176, socket=1
+testpmd: preferred mempool ops selected: ring_mp_mc
+
+Warning! port-topology=paired and odd forward ports number, the last port will pair with itself.
+
+Configuring Port 0 (socket 1)
+Port 0: 12:E7:4C:8D:CE:86
+Checking link statuses...
+Done
+testpmd> 
+
 ##############################################################################################################################################################################
 ##############################################################################################################################################################################
 RX POD
