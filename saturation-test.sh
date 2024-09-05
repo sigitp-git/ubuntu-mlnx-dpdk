@@ -157,6 +157,20 @@ Checking link statuses...
 Done
 testpmd> 
 
+testpmd> show port stats 0
+
+  ######################## NIC statistics for port 0  ########################
+  RX-packets: 0          RX-missed: 0          RX-bytes:  0
+  RX-errors: 0
+  RX-nombuf:  0         
+  TX-packets: 12805546258 TX-errors: 0          TX-bytes:  819554970944
+
+  Throughput (since last show)
+  Rx-pps:            0          Rx-bps:            0
+  Tx-pps:    187691516          Tx-bps:  96098059848
+  ############################################################################
+testpmd> 
+
 ##############################################################################################################################################################################
 ##############################################################################################################################################################################
 RX POD
@@ -321,4 +335,18 @@ mlx5_net: adjust txq_inline_max (290->204) due to large Tx queue on port 0
 Port 0: EE:2A:47:DE:E1:EB
 Checking link statuses...
 Done
+testpmd> 
+
+testpmd> show port stats 0
+
+  ######################## NIC statistics for port 0  ########################
+  RX-packets: 10068910672 RX-missed: 0          RX-bytes:  644410283008
+  RX-errors: 0
+  RX-nombuf:  0         
+  TX-packets: 0          TX-errors: 0          TX-bytes:  0
+
+  Throughput (since last show)
+  Rx-pps:    142681590          Rx-bps:  73052974352
+  Tx-pps:            0          Tx-bps:            0
+  ############################################################################
 testpmd> 
