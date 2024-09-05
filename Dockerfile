@@ -47,7 +47,7 @@ ARG DPDK_VER
 RUN cd /usr/src/ &&  wget https://git.dpdk.org/dpdk/snapshot/dpdk-${DPDK_VER}.tar.gz && tar xzvf dpdk-${DPDK_VER}.tar.gz
 ENV DPDK_DIR=/usr/src/dpdk-${DPDK_VER}
 # Change 'RTE_MAX_LCORE', 128 to 'RTE_MAX_LCORE', 191
-RUN cd $DPDK_DIR/x86/ && mv meson.build meson.build.bak && wget https://new-meson.build.raw
+RUN cd $DPDK_DIR/config/x86/ && mv meson.build meson.build.bak && wget https://new-meson.build.raw
 RUN cd $DPDK_DIR && meson build && ninja -C build
 
 # Remove unnecessary packages and files
