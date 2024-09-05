@@ -1,5 +1,5 @@
 ##RX
-root@mlnx-dpdk-vlan100-node2:/usr/src/dpdk-21.11-rc4# ./build/app/dpdk-testpmd -l 1,2,97,98 --a 02:00.6 --file-prefix sigitp-dpdk-test --socket-mem=4096,4096 --proc-type=auto -- --nb-cores=3 --rxq=4 --txq=4 -i --forward-mode=rxonly --stats-period 5                        
+root@mlnx-dpdk-vlan100-node2:/usr/src/dpdk-21.11-rc4# ./build/app/dpdk-testpmd -l 1,2,97,98 --a 02:00.6 --file-prefix sigitp-dpdk-test --socket-mem=4096,4096 --proc-type=auto -- --nb-cores=3 --rxq=4 --txq=4 -i --forward-mode=rxonly --stats-period 5
 EAL: Detected CPU lcores: 128
 EAL: Detected NUMA nodes: 2
 EAL: Auto-detected process type: PRIMARY
@@ -22,7 +22,31 @@ Checking link statuses...
 Done
 testpmd> 
 
-##TX
+##TX USING DESTINATION MAC-ADDR
+root@mlnx-dpdk-vlan100-node1:/usr/src/dpdk-21.11-rc4# ./build/app/dpdk-testpmd -l 1,2,97,98 -n 4 -a 02:00.3 --file-prefix sigitp-dpdk-test --socket-mem=4096,4096 --proc-type=auto -- --nb-cores=3 --rxq=4 --txq=4 -i --forward-mode=txonly --tx-ip=169.254.254.55,169.254.254.75 --eth-peer=0,26:de:45:df:09:80
+EAL: Detected CPU lcores: 128
+EAL: Detected NUMA nodes: 2
+EAL: Auto-detected process type: PRIMARY
+EAL: Detected static linkage of DPDK
+EAL: Multi-process socket /var/run/dpdk/sigitp-dpdk-test/mp_socket
+EAL: Selected IOVA mode 'PA'
+EAL: No available 2048 kB hugepages reported
+EAL: Probe PCI driver: mlx5_pci (15b3:101e) device: 0000:02:00.3 (socket 0)
+TELEMETRY: No legacy callbacks, legacy socket not created
+Interactive-mode selected
+Set txonly packet forwarding mode
+testpmd: create a new mbuf pool <mb_pool_0>: n=171456, size=2176, socket=0
+testpmd: preferred mempool ops selected: ring_mp_mc
+
+Warning! port-topology=paired and odd forward ports number, the last port will pair with itself.
+
+Configuring Port 0 (socket 0)
+Port 0: 26:A4:02:96:2F:42
+Checking link statuses...
+Done
+testpmd> 
+
+##TX USING NEIGHBORS MAC-ADDR
 root@mlnx-dpdk-vlan100-node1:/usr/src/dpdk-21.11-rc4# arp -a
 ? (169.254.1.1) at 96:a4:51:37:2e:74 [ether] PERM on eth0
 10-0-60-7.prometheus-for-amp-prometheus-node-exporter.prometheus.svc.cluster.local (10.0.60.7) at 96:a4:51:37:2e:74 [ether] on eth0
