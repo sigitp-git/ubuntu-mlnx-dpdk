@@ -28,6 +28,8 @@ net-tools \
 python3-pip \
 pciutils \
 iputils-ping \
+vim \
+tcpdump \
 kmod \
 linux-headers-$(uname -r) \
 && rm -rf /var/lib/apt/lists/*
