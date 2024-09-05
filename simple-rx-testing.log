@@ -1,5 +1,7 @@
 ########################################################################################################################################
-##RX
+## RX
+########################################################################################################################################
+
 root@mlnx-dpdk-vlan100-node2:/usr/src/dpdk-21.11-rc4# ./build/app/dpdk-testpmd -l 1,2,97,98 --a 02:00.6 --file-prefix sigitp-dpdk-test --socket-mem=4096,4096 --proc-type=auto -- --nb-cores=3 --rxq=4 --txq=4 -i --forward-mode=rxonly --stats-period 5
 EAL: Detected CPU lcores: 128
 EAL: Detected NUMA nodes: 2
@@ -48,7 +50,9 @@ Logical Core 98 (socket 0) forwards packets on 2 streams:
 testpmd> 
 
 ########################################################################################################################################
-##TX USING DESTINATION MAC-ADDR
+## TX USING DESTINATION MAC-ADDR [CORRECT APPROACH IN L2 NETWORK LIKE DSF]
+########################################################################################################################################
+
 root@mlnx-dpdk-vlan100-node1:/usr/src/dpdk-21.11-rc4# ./build/app/dpdk-testpmd -l 1,2,97,98 -n 4 -a 02:00.3 --file-prefix sigitp-dpdk-test --socket-mem=4096,4096 --proc-type=auto -- --nb-cores=3 --rxq=4 --txq=4 -i --forward-mode=txonly --txonly-multi-flow --tx-ip=169.254.254.55,169.254.254.75 --eth-peer=0,26:de:45:df:09:80                                                                                    
 EAL: Detected CPU lcores: 128
 EAL: Detected NUMA nodes: 2
@@ -98,7 +102,9 @@ Logical Core 98 (socket 0) forwards packets on 2 streams:
 testpmd> 
 
 ########################################################################################################################################
-##TX USING NEIGHBORS MAC-ADDR
+## TX USING NEIGHBORS MAC-ADDR [WRONG APPROACH IN L2 NETWORK LIKE DSF, BUT MIGHT BE USEFUL FOR L3 NETWORK]
+########################################################################################################################################
+
 root@mlnx-dpdk-vlan100-node1:/usr/src/dpdk-21.11-rc4# arp -a
 ? (169.254.1.1) at 96:a4:51:37:2e:74 [ether] PERM on eth0
 10-0-60-7.prometheus-for-amp-prometheus-node-exporter.prometheus.svc.cluster.local (10.0.60.7) at 96:a4:51:37:2e:74 [ether] on eth0
