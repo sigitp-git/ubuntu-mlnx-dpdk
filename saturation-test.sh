@@ -90,6 +90,26 @@ Checking link statuses...
 Done
 testpmd> 
 
+testpmd> show port summary all
+Number of available ports: 1
+Port MAC Address       Name         Driver         Status   Link
+0    12:E7:4C:8D:CE:86 0001:16:00.3 mlx5_pci       up       200 Gbps
+testpmd> 
+
+testpmd> show port stats 0
+
+  ######################## NIC statistics for port 0  ########################
+  RX-packets: 0          RX-missed: 0          RX-bytes:  0
+  RX-errors: 0
+  RX-nombuf:  0         
+  TX-packets: 6238955584 TX-errors: 0          TX-bytes:  399293161472
+
+  Throughput (since last show)
+  Rx-pps:            0          Rx-bps:            0
+  Tx-pps:    143279102          Tx-bps:  73358900488
+  ############################################################################
+testpmd> 
+
 ##############################################################################################################################################################################
 ##############################################################################################################################################################################
 RX POD
@@ -148,3 +168,69 @@ net1: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1500
 root@mlnx-dpdk-dsf-node2:/usr/src/dpdk-21.11-rc4# 
 
 ./build/app/dpdk-testpmd -l 49-56,145-152 --a 0001:16:01.0 --file-prefix sigitp-dpdk-test --socket-mem=4096,4096 --proc-type=auto -- --nb-cores=15 --rxq=4 --txq=4 -i --forward-mode=rxonly --eth-peer=0,12:e7:4c:8d:ce:86 --stats-period 5
+
+root@mlnx-dpdk-dsf-node2:/usr/src/dpdk-21.11-rc4# ./build/app/dpdk-testpmd -l 49-56,145-152 --a 0001:16:01.0 --file-prefix sigitp-dpdk-test --socket-mem=4096,4096 --proc-type=auto -- --nb-cores=15 --rxq=4 --txq=4 -i --forward-mode=rxonly --eth-peer=0,12:e7:4c:8d:ce:86 --stats-period 5
+EAL: Detected CPU lcores: 191
+EAL: Detected NUMA nodes: 2
+EAL: Auto-detected process type: PRIMARY
+EAL: Detected static linkage of DPDK
+EAL: Multi-process socket /var/run/dpdk/sigitp-dpdk-test/mp_socket
+EAL: Selected IOVA mode 'PA'
+EAL: No available 2048 kB hugepages reported
+EAL: Probe PCI driver: mlx5_pci (15b3:101e) device: 0001:16:01.0 (socket 1)
+TELEMETRY: No legacy callbacks, legacy socket not created
+Interactive-mode selected
+Set rxonly packet forwarding mode
+testpmd: create a new mbuf pool <mb_pool_1>: n=267456, size=2176, socket=1
+testpmd: preferred mempool ops selected: ring_mp_mc
+
+Warning! port-topology=paired and odd forward ports number, the last port will pair with itself.
+
+Configuring Port 0 (socket 1)
+Port 0: EE:2A:47:DE:E1:EB
+Checking link statuses...
+Done
+testpmd>
+
+Number of available ports: 1
+Port MAC Address       Name         Driver         Status   Link
+0    EE:2A:47:DE:E1:EB 0001:16:01.0 mlx5_pci       up       200 Gbps
+testpmd> 
+
+testpmd> start
+rxonly packet forwarding - ports=1 - cores=4 - streams=4 - NUMA support enabled, MP allocation mode: native
+Logical Core 50 (socket 1) forwards packets on 1 streams:
+  RX P=0/Q=0 (socket 1) -> TX P=0/Q=0 (socket 1) peer=12:E7:4C:8D:CE:86
+Logical Core 51 (socket 1) forwards packets on 1 streams:
+  RX P=0/Q=1 (socket 1) -> TX P=0/Q=1 (socket 1) peer=12:E7:4C:8D:CE:86
+Logical Core 52 (socket 1) forwards packets on 1 streams:
+  RX P=0/Q=2 (socket 1) -> TX P=0/Q=2 (socket 1) peer=12:E7:4C:8D:CE:86
+Logical Core 53 (socket 1) forwards packets on 1 streams:
+  RX P=0/Q=3 (socket 1) -> TX P=0/Q=3 (socket 1) peer=12:E7:4C:8D:CE:86
+
+  rxonly packet forwarding packets/burst=32
+  nb forwarding cores=15 - nb forwarding ports=1
+  port 0: RX queue number: 4 Tx queue number: 4
+    Rx offloads=0x0 Tx offloads=0x10000
+    RX queue: 0
+      RX desc=2048 - RX free threshold=64
+      RX threshold registers: pthresh=0 hthresh=0  wthresh=0
+      RX Offloads=0x0
+    TX queue: 0
+      TX desc=2048 - TX free threshold=0
+      TX threshold registers: pthresh=0 hthresh=0  wthresh=0
+      TX offloads=0x10000 - TX RS bit threshold=0
+
+testpmd> show port stats 0
+
+  ######################## NIC statistics for port 0  ########################
+  RX-packets: 4966966153 RX-missed: 890        RX-bytes:  317885833792
+  RX-errors: 0
+  RX-nombuf:  0         
+  TX-packets: 0          TX-errors: 0          TX-bytes:  0
+
+  Throughput (since last show)
+  Rx-pps:    108197445          Rx-bps:  55397091840
+  Tx-pps:            0          Tx-bps:            0
+  ############################################################################
+testpmd> 
