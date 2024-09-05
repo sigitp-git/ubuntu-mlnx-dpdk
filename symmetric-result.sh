@@ -103,6 +103,20 @@ testpmd> show port stats 0
   RX-packets: 0          RX-missed: 0          RX-bytes:  0
   RX-errors: 0
   RX-nombuf:  0         
+  TX-packets: 631486624  TX-errors: 0          TX-bytes:  40415143936
+
+  Throughput (since last show)
+  Rx-pps:            0          Rx-bps:            0
+  Tx-pps:     91829304          Tx-bps:  47016604000
+  ############################################################################
+testpmd> 
+
+testpmd> show port stats 0
+
+  ######################## NIC statistics for port 0  ########################
+  RX-packets: 0          RX-missed: 0          RX-bytes:  0
+  RX-errors: 0
+  RX-nombuf:  0         
   TX-packets: 6530991616 TX-errors: 0          TX-bytes:  417983463424
 
   Throughput (since last show)
@@ -242,6 +256,20 @@ Logical Core 98 (socket 0) forwards packets on 2 streams:
       TX desc=2048 - TX free threshold=0
       TX threshold registers: pthresh=0 hthresh=0  wthresh=0
       TX offloads=0x10000 - TX RS bit threshold=0
+testpmd> 
+
+testpmd> show port stats 0
+
+  ######################## NIC statistics for port 0  ########################
+  RX-packets: 1141887309 RX-missed: 7440       RX-bytes:  73080787776
+  RX-errors: 0
+  RX-nombuf:  0         
+  TX-packets: 0          TX-errors: 0          TX-bytes:  0
+
+  Throughput (since last show)
+  Rx-pps:     91357480          Rx-bps:  46775030032
+  Tx-pps:            0          Tx-bps:            0
+  ############################################################################
 testpmd> 
 
 testpmd> show port stats 0
