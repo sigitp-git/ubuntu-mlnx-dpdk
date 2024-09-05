@@ -146,3 +146,5 @@ net1: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1500
         TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
 
 root@mlnx-dpdk-dsf-node2:/usr/src/dpdk-21.11-rc4# 
+
+./build/app/dpdk-testpmd -l 49-56,145-152 --a 0001:16:01.0 --file-prefix sigitp-dpdk-test --socket-mem=4096,4096 --proc-type=auto -- --nb-cores=15 --rxq=4 --txq=4 -i --forward-mode=rxonly --eth-peer=0,12:e7:4c:8d:ce:86 --stats-period 5
