@@ -55,7 +55,7 @@ net1: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1500
 
 root@mlnx-dpdk-dsf-node1:/usr/src/dpdk-21.11-rc4# 
 
-./build/app/dpdk-testpmd -l 1,2,97,98 -n 4 -a 02:00.3 --file-prefix sigitp-dpdk-test --socket-mem=4096,4096 --proc-type=auto -- --nb-cores=3 --rxq=4 --txq=4 -i --forward-mode=txonly --txonly-multi-flow --tx-ip=169.254.254.55,169.254.254.75 --eth-peer=0,26:de:45:df:09:80
+./build/app/dpdk-testpmd -l 49-56,145-152 -n 4 -a 0001:16:00.3 --file-prefix sigitp-dpdk-test --socket-mem=4096,4096 --proc-type=auto -- --nb-cores=15 --rxq=4 --txq=4 -i --forward-mode=txonly --txonly-multi-flow --tx-ip=169.10.1.4,169.10.1.5 --eth-peer=0,ee:2a:47:de:e1:eb
 
 ##############################################################################################################################################################################
 ##############################################################################################################################################################################
