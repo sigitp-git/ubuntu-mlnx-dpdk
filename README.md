@@ -79,9 +79,11 @@ ubuntu@ip-172-31-16-91:~/ubuntu-mlnx-dpdk-dockerfile$ sudo docker build -t 29161
  => => exporting manifest list sha256:738f627b78205cbdd12bd621177b36cd888f4a31eff077bd792f3a6759f4961e                                     0.0s
  => => naming to 291615555612.dkr.ecr.us-east-1.amazonaws.com/sigitp-ecr:ubuntu-mlnx-dpdk-amd64                                            0.0s
  => => unpacking to 291615555612.dkr.ecr.us-east-1.amazonaws.com/sigitp-ecr:ubuntu-mlnx-dpdk-amd64                                        15.4s
+
 ubuntu@ip-172-31-16-91:~/ubuntu-mlnx-dpdk-dockerfile$ sudo docker images
 REPOSITORY                                                TAG                      IMAGE ID       CREATED        SIZE
 291615555612.dkr.ecr.us-east-1.amazonaws.com/sigitp-ecr   ubuntu-mlnx-dpdk-amd64   738f627b7820   19 hours ago   1.9GB
+
 ubuntu@ip-172-31-16-91:~/ubuntu-mlnx-dpdk-dockerfile$ sudo docker push 291615555612.dkr.ecr.us-east-1.amazonaws.com/sigitp-ecr:ubuntu-mlnx-dpdk-amd64
 8cd1fa317ed3: Pushed 
 738f627b7820: Pushed 
