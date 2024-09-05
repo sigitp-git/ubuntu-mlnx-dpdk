@@ -124,7 +124,7 @@ testpmd>
 NOTE:
 - changing peer MAC address to next hop is not correct for L2 network, but might be useful for L3 network
 - removing --tx-ip=169.254.254.55,169.254.254.75 makes the traffic asymmetric, tx bps (46576114544) became more than rx bps (38698010784)
-- keeping --tx-ip=169.254.254.55,169.254.254.75, but removing --txonly-multi-flow
+- keeping --tx-ip=169.254.254.55,169.254.254.75, but removing --txonly-multi-flow also makes the traffic asymmetric, tx bps (66044473776) rx bps (18366620792)
 
 ##############################################################################################################################################################################
 ##############################################################################################################################################################################
