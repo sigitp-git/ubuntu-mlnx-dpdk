@@ -203,11 +203,26 @@ testpmd> show port stats 0
   RX-packets: 0          RX-missed: 0          RX-bytes:  0
   RX-errors: 0
   RX-nombuf:  0         
-  TX-packets: 16350852224 TX-errors: 0          TX-bytes:  1046454543040
+  TX-packets: 15999269632 TX-errors: 0          TX-bytes:  1023953259968
 
   Throughput (since last show)
   Rx-pps:            0          Rx-bps:            0
-  Tx-pps:    187544510          Tx-bps:  96022789360
+  Tx-pps:    187356769          Tx-bps:  95926727344
+  ############################################################################
+testpmd>
+
+# second run
+testpmd> show port stats 0
+
+  ######################## NIC statistics for port 0  ########################
+  RX-packets: 0          RX-missed: 0          RX-bytes:  0
+  RX-errors: 0
+  RX-nombuf:  0         
+  TX-packets: 10702554624 TX-errors: 0          TX-bytes:  684963495936
+
+  Throughput (since last show)
+  Rx-pps:            0          Rx-bps:            0
+  Tx-pps:    187573076          Tx-bps:  96037413896
   ############################################################################
 testpmd> 
 
@@ -397,13 +412,28 @@ testpmd>
 testpmd> show port stats 0
 
   ######################## NIC statistics for port 0  ########################
-  RX-packets: 12809831738 RX-missed: 0          RX-bytes:  819829231232
+  RX-packets: 29928488183 RX-missed: 0          RX-bytes:  1915423243712
   RX-errors: 0
   RX-nombuf:  0         
   TX-packets: 0          TX-errors: 0          TX-bytes:  0
 
   Throughput (since last show)
-  Rx-pps:    142680799          Rx-bps:  73052569088
+  Rx-pps:     18571849          Rx-bps:   9508786928
+  Tx-pps:            0          Tx-bps:            0
+  ############################################################################
+testpmd>
+
+# second run
+testpmd> show port stats 0
+
+  ######################## NIC statistics for port 0  ########################
+  RX-packets: 9821594650 RX-missed: 0          RX-bytes:  628582057600
+  RX-errors: 0
+  RX-nombuf:  0         
+  TX-packets: 0          TX-errors: 0          TX-bytes:  0
+
+  Throughput (since last show)
+  Rx-pps:    182190127          Rx-bps:  93281345496
   Tx-pps:            0          Tx-bps:            0
   ############################################################################
 testpmd> 
