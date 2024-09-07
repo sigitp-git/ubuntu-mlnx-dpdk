@@ -465,3 +465,130 @@ testpmd> show port stats 0
   Tx-pps:            0          Tx-bps:            0
   ############################################################################
 testpmd> 
+
+## simple rx
+dpdk-testpmd \
+    -a 00:04.0 \
+    -l 1-21 -- \
+    --forward-mode=rxonly \
+    --txq=16 \
+    --rxq=16 \
+    --nb-cores=20 \
+    --stats-period 5
+
+./build/app/dpdk-testpmd -l 49-64,144-160 -a 0001:16:00.4,mprq_en=1,rxqs_min_mprq=1,mprq_log_stride_num=9,txq_inline_mpw=128,rxq_pkt_pad_en=1 --file-prefix sigitp-dpdk-test -- --nb-cores=32 --rxq=24 --txq=24 -i --forward-mode=rxonly --eth-peer=0,ca:3c:7c:8b:b2:7e --stats-period 5    
+
+root@mlnx-dpdk-dsf-node2:/usr/src/dpdk-21.11-rc4# ./build/app/dpdk-testpmd -l 49-64,144-160 -a 0001:16:00.4,mprq_en=1,rxqs_min_mprq=1,mprq_log_stride_num=9,txq_inline_mpw=128,rxq_pkt_pad_en=1 --file-prefix sigitp-dpdk-test -- --nb-cores=32 --rxq=24 --txq=24 -i --forward-mode=rxonly --eth-peer=0,ca:3c:7c:8b:b2:7e --stats-period 5    
+EAL: Detected CPU lcores: 191
+EAL: Detected NUMA nodes: 2
+EAL: Detected static linkage of DPDK
+EAL: Multi-process socket /var/run/dpdk/sigitp-dpdk-test/mp_socket
+EAL: Selected IOVA mode 'PA'
+EAL: No available 2048 kB hugepages reported
+EAL: Probe PCI driver: mlx5_pci (15b3:101e) device: 0001:16:00.4 (socket 1)
+TELEMETRY: No legacy callbacks, legacy socket not created
+Interactive-mode selected
+Set rxonly packet forwarding mode
+testpmd: create a new mbuf pool <mb_pool_1>: n=403456, size=2176, socket=1
+testpmd: preferred mempool ops selected: ring_mp_mc
+
+Warning! port-topology=paired and odd forward ports number, the last port will pair with itself.
+
+Configuring Port 0 (socket 1)
+Port 0: 46:2C:0B:44:84:8E
+Checking link statuses...
+Done
+testpmd> start
+rxonly packet forwarding - ports=1 - cores=24 - streams=24 - NUMA support enabled, MP allocation mode: native
+Logical Core 50 (socket 1) forwards packets on 1 streams:
+  RX P=0/Q=0 (socket 1) -> TX P=0/Q=0 (socket 1) peer=CA:3C:7C:8B:B2:7E
+Logical Core 51 (socket 1) forwards packets on 1 streams:
+  RX P=0/Q=1 (socket 1) -> TX P=0/Q=1 (socket 1) peer=CA:3C:7C:8B:B2:7E
+Logical Core 52 (socket 1) forwards packets on 1 streams:
+  RX P=0/Q=2 (socket 1) -> TX P=0/Q=2 (socket 1) peer=CA:3C:7C:8B:B2:7E
+Logical Core 53 (socket 1) forwards packets on 1 streams:
+  RX P=0/Q=3 (socket 1) -> TX P=0/Q=3 (socket 1) peer=CA:3C:7C:8B:B2:7E
+Logical Core 54 (socket 1) forwards packets on 1 streams:
+  RX P=0/Q=4 (socket 1) -> TX P=0/Q=4 (socket 1) peer=CA:3C:7C:8B:B2:7E
+Logical Core 55 (socket 1) forwards packets on 1 streams:
+  RX P=0/Q=5 (socket 1) -> TX P=0/Q=5 (socket 1) peer=CA:3C:7C:8B:B2:7E
+Logical Core 56 (socket 1) forwards packets on 1 streams:
+  RX P=0/Q=6 (socket 1) -> TX P=0/Q=6 (socket 1) peer=CA:3C:7C:8B:B2:7E
+Logical Core 57 (socket 1) forwards packets on 1 streams:
+  RX P=0/Q=7 (socket 1) -> TX P=0/Q=7 (socket 1) peer=CA:3C:7C:8B:B2:7E
+Logical Core 58 (socket 1) forwards packets on 1 streams:
+  RX P=0/Q=8 (socket 1) -> TX P=0/Q=8 (socket 1) peer=CA:3C:7C:8B:B2:7E
+Logical Core 59 (socket 1) forwards packets on 1 streams:
+  RX P=0/Q=9 (socket 1) -> TX P=0/Q=9 (socket 1) peer=CA:3C:7C:8B:B2:7E
+Logical Core 60 (socket 1) forwards packets on 1 streams:
+  RX P=0/Q=10 (socket 1) -> TX P=0/Q=10 (socket 1) peer=CA:3C:7C:8B:B2:7E
+Logical Core 61 (socket 1) forwards packets on 1 streams:
+  RX P=0/Q=11 (socket 1) -> TX P=0/Q=11 (socket 1) peer=CA:3C:7C:8B:B2:7E
+Logical Core 62 (socket 1) forwards packets on 1 streams:
+  RX P=0/Q=12 (socket 1) -> TX P=0/Q=12 (socket 1) peer=CA:3C:7C:8B:B2:7E
+Logical Core 63 (socket 1) forwards packets on 1 streams:
+  RX P=0/Q=13 (socket 1) -> TX P=0/Q=13 (socket 1) peer=CA:3C:7C:8B:B2:7E
+Logical Core 64 (socket 1) forwards packets on 1 streams:
+  RX P=0/Q=14 (socket 1) -> TX P=0/Q=14 (socket 1) peer=CA:3C:7C:8B:B2:7E
+Logical Core 144 (socket 1) forwards packets on 1 streams:
+  RX P=0/Q=15 (socket 1) -> TX P=0/Q=15 (socket 1) peer=CA:3C:7C:8B:B2:7E
+Logical Core 145 (socket 1) forwards packets on 1 streams:
+  RX P=0/Q=16 (socket 1) -> TX P=0/Q=16 (socket 1) peer=CA:3C:7C:8B:B2:7E
+Logical Core 146 (socket 1) forwards packets on 1 streams:
+  RX P=0/Q=17 (socket 1) -> TX P=0/Q=17 (socket 1) peer=CA:3C:7C:8B:B2:7E
+Logical Core 147 (socket 1) forwards packets on 1 streams:
+  RX P=0/Q=18 (socket 1) -> TX P=0/Q=18 (socket 1) peer=CA:3C:7C:8B:B2:7E
+Logical Core 148 (socket 1) forwards packets on 1 streams:
+  RX P=0/Q=19 (socket 1) -> TX P=0/Q=19 (socket 1) peer=CA:3C:7C:8B:B2:7E
+Logical Core 149 (socket 1) forwards packets on 1 streams:
+  RX P=0/Q=20 (socket 1) -> TX P=0/Q=20 (socket 1) peer=CA:3C:7C:8B:B2:7E
+Logical Core 150 (socket 1) forwards packets on 1 streams:
+  RX P=0/Q=21 (socket 1) -> TX P=0/Q=21 (socket 1) peer=CA:3C:7C:8B:B2:7E
+Logical Core 151 (socket 1) forwards packets on 1 streams:
+  RX P=0/Q=22 (socket 1) -> TX P=0/Q=22 (socket 1) peer=CA:3C:7C:8B:B2:7E
+Logical Core 152 (socket 1) forwards packets on 1 streams:
+  RX P=0/Q=23 (socket 1) -> TX P=0/Q=23 (socket 1) peer=CA:3C:7C:8B:B2:7E
+
+  rxonly packet forwarding packets/burst=32
+  nb forwarding cores=32 - nb forwarding ports=1
+  port 0: RX queue number: 24 Tx queue number: 24
+    Rx offloads=0x0 Tx offloads=0x0
+    RX queue: 0
+      RX desc=2048 - RX free threshold=64
+      RX threshold registers: pthresh=0 hthresh=0  wthresh=0
+      RX Offloads=0x0
+    TX queue: 0
+      TX desc=2048 - TX free threshold=0
+      TX threshold registers: pthresh=0 hthresh=0  wthresh=0
+      TX offloads=0x0 - TX RS bit threshold=0
+testpmd> 
+
+# seems to be more balance tx-rx using the simple rx
+
+testpmd> show port stats 0
+
+  ######################## NIC statistics for port 0  ########################
+  RX-packets: 0          RX-missed: 0          RX-bytes:  0
+  RX-errors: 0
+  RX-nombuf:  0         
+  TX-packets: 18739604064 TX-errors: 0          TX-bytes:  1199334660096
+
+  Throughput (since last show)
+  Rx-pps:            0          Rx-bps:            0
+  Tx-pps:    187590459          Tx-bps:  96046312880
+  ############################################################################
+testpmd> 
+
+testpmd> show port stats 0
+
+  ######################## NIC statistics for port 0  ########################
+  RX-packets: 17479597141 RX-missed: 0          RX-bytes:  1118694217024
+  RX-errors: 0
+  RX-nombuf:  0         
+  TX-packets: 0          TX-errors: 0          TX-bytes:  0
+
+  Throughput (since last show)
+  Rx-pps:    182158602          Rx-bps:  93265204432
+  Tx-pps:            0          Tx-bps:            0
+  ############################################################################
+testpmd> 
