@@ -42,6 +42,9 @@ ubuntu@ip-172-31-26-158:~$ kubectl exec -it mlnx-dpdk-dsf-node2 -- sh -c 'KUBEPO
 kubectl exec -it mlnx-dpdk-1001-1002-node1 -- sh -c 'KUBEPOD_SLICE=$(cut -d: -f3 /proc/self/cgroup); cat /sys/fs/cgroup$KUBEPOD_SLICE/cpuset.cpus.effective'
 49-64,144-160
 
+kubectl exec -it mlnx-dpdk-1001-1002-node2 -- sh -c 'KUBEPOD_SLICE=$(cut -d: -f3 /proc/self/cgroup); cat /sys/fs/cgroup$KUBEPOD_SLICE/cpuset.cpus.effective'
+48-64,144-159
+
 ## Checking CPU allocation on the hosts
 node-1$ sudo cat /var/lib/kubelet/cpu_manager_state | jq
 {
