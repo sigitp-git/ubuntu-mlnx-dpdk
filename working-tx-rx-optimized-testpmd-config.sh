@@ -83,3 +83,33 @@ node-2$ sudo cat /var/lib/kubelet/cpu_manager_state | jq
   "checksum": 67353168
 }
 node-2$ 
+
+-------------------------------------------------------------------------------------------------------------------
+TX
+-------------------------------------------------------------------------------------------------------------------
+KUBEPOD_SLICE=$(cut -d: -f3 /proc/self/cgroup); export CPU=$(cat /sys/fs/cgroup$KUBEPOD_SLICE/cpuset.cpus.effective)
+echo ${CPU}
+
+export PCI=$(ethtool -i net1 | grep bus-info | awk '{print $2}')
+echo ${PCI}
+
+./build/app/dpdk-testpmd -l ${CPU} -n 6 -a ${PCI},mprq_en=1,rxqs_min_mprq=1,mprq_log_stride_num=9,txq_inline_mpw=128,rxq_pkt_pad_en=1 --file-prefix sigitp-dpdk-test --socket-mem=4096,4096 --proc-type=auto -- --mbcache=512 --burst=64 --nb-cores=32 --rxq=24 --txq=24 -i --rxd=8192 --txd=8192 --forward-mode=txonly --txonly-multi-flow --tx-ip=169.30.1.2,169.30.1.3 --eth-peer=0,aa:64:62:7a:97:27
+
+#optional
+lspci -v -nn -mm -k -s ${PCI}
+--socket-mem=8192,0
+
+-------------------------------------------------------------------------------------------------------------------
+RX
+-------------------------------------------------------------------------------------------------------------------
+KUBEPOD_SLICE=$(cut -d: -f3 /proc/self/cgroup); export CPU=$(cat /sys/fs/cgroup$KUBEPOD_SLICE/cpuset.cpus.effective)
+echo ${CPU}
+
+export PCI=$(ethtool -i net1 | grep bus-info | awk '{print $2}')
+echo ${PCI}
+
+./build/app/dpdk-testpmd -l ${CPU} -a ${PCI},mprq_en=1,rxqs_min_mprq=1,mprq_log_stride_num=9,txq_inline_mpw=128,rxq_pkt_pad_en=1 --file-prefix sigitp-dpdk-test -- --nb-cores=32 --rxq=24 --txq=24 -i --forward-mode=rxonly --eth-peer=0,2e:61:54:1c:3d:73 --stats-period 5
+
+#optional
+lspci -v -nn -mm -k -s ${PCI}
+--socket-mem=8192,0
