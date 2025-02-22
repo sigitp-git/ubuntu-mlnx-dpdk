@@ -6,7 +6,7 @@ ethtool -i net1
 KUBEPOD_SLICE=$(cut -d: -f3 /proc/self/cgroup); cat /sys/fs/cgroup$KUBEPOD_SLICE/cpuset.cpus.effective
 ./build/app/dpdk-testpmd -l 48-64,144-159 -n 6 -a 0001:16:01.2,mprq_en=1,rxqs_min_mprq=1,mprq_log_stride_num=9,txq_inline_mpw=128,rxq_pkt_pad_en=1 --file-prefix sigitp-dpdk-test --socket-mem=4096,4096 --proc-type=auto -- --mbcache=512 --burst=64 --nb-cores=32 --rxq=24 --txq=24 -i --rxd=8192 --txd=8192 --forward-mode=txonly --txonly-multi-flow --tx-ip=169.30.1.2,169.30.1.3 --eth-peer=0,aa:64:62:7a:97:27
 --------------------------------------
-KUBEPOD_SLICE=$(cut -d: -f3 /proc/self/cgroup); export CPU=$(cat /sys/fs/cgroup$KUBEPOD_SLICE/cpuset.cpus.effective)
+export KUBEPOD_SLICE=$(cut -d: -f3 /proc/self/cgroup); export CPU=$(cat /sys/fs/cgroup$KUBEPOD_SLICE/cpuset.cpus.effective)
 echo ${CPU}
 
 export PCI=$(ethtool -i net1 | grep bus-info | awk '{print $2}')
