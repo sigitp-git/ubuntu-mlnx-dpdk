@@ -58,6 +58,7 @@ service kubelet status
 4. Adding VF to PF
 ======================================
 vim /bin/create-virtual-function.sh
+change VF value to 0 before changing to new value (16, 32, more, depends on firmware version)
 /bin/create-virtual-function.sh
 
 5. SRIOV Metrics Exporter, worker node reinstall
