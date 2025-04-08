@@ -101,3 +101,41 @@ a5d3781910db: Pushed
 a305f2aba1b8: Pushed 
 ubuntu@ip-172-31-16-91:~/ubuntu-mlnx-dpdk-dockerfile$ 
 ```
+
+# Running Testpmd
+Usage: https://edc.intel.com/content/www/us/en/design/products/ethernet/config-guide-e810-dpdk/running-testpmd/
+
+When running testpmd there are two distinct parts to the command-line options – the first half are the EAL parameters, followed by the testpmd command-line options as the second half. These sections are separated in the command with a -- separator.
+
+For example, a simple command to start testpmd looks like:
+```
+./dpdk-testpmd -a 00:01.0 -- -i
+```
+This command explicitly passes in the PCI device located at BDF number 00:01.0 with the -a flag in the EAL section of the command. Then the -i flag in the testpmd section starts the application in interactive mode.
+
+For more details on the role of EAL, see the DPDK Overview.
+
+Common Command-line Options
+
+This section lists several common flags for EAL parameters and testpmd parameters. These commands are intended to provide a starting place when learning the application. Several of these flags have more details available on dpdk.org. See Example Testpmd Configuration for an extended example of running testpmd.
+
+Some common flags for EAL parameters include:
+
+-a, --allow <[domain:]bus:devid.func>: Add a PCI device in to the list of devices to probe.
+-n <number of channels>: Set the number of memory channels to use.
+-l <core list>: List of cores to run on, where - is used as a range separator and , is used as a single number separator.
+--socket-mem <amounts of memory per socket>: Preallocate specified amounts of memory per socket. The parameter is a comma-separated list of values.
+For a complete list of EAL parameters, see dpdk.org:
+
+https://doc.dpdk.org/guides/linux_gsg/linux_eal_parameters.html
+
+Some common flags for testpmd options include:
+
+-i, --interactive: Start testpmd with an interactive prompt. See Testpmd Runtime Functions for more details.
+--rxq=N: Set number of RX queues per port to N.
+--txq=N: Set number of TX queues per port to N.
+--nb-cores=N: Set number of forwarding cores.
+--forward-mode=mode: Set forwarding to a specific mode such as mac, rxonly, ieee1588, noisy, etc. The default mode is io.
+For a complete list of testpmd command-line options, see dpdk.org:
+
+https://doc.dpdk.org/guides/testpmd_app_ug/run_app.html
