@@ -596,7 +596,8 @@ serviceaccount/multus created
 configmap/multus-daemon-config created
 daemonset.apps/kube-multus-ds created
 
-ubuntu@cloud9-sigitp2:~/environment/gv3-outposts-server-sjc38$ kubectl get po -A                                                                          NAMESPACE                  NAME                                                              READY   STATUS     RESTARTS       AGE
+ubuntu@cloud9-sigitp2:~/environment/gv3-outposts-server-sjc38$ kubectl get po -A
+                                                                          NAMESPACE                  NAME                                                              READY   STATUS     RESTARTS       AGE
 amazon-cloudwatch          amazon-cloudwatch-observability-controller-manager-77474b58tq8t   1/1     Running    0              3d19h
 amazon-cloudwatch          cloudwatch-agent-vdznr                                            1/1     Running    1 (3d1h ago)   3d1h
 amazon-cloudwatch          fluent-bit-7d7p5                                                  1/1     Running    0              3d1h
