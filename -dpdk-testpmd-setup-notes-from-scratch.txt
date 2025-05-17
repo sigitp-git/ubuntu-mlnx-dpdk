@@ -642,6 +642,7 @@ ubuntu@cloud9-sigitp2:~/environment/gv3-outposts-server-sjc38$
 
 5. Deploy SRIOV-CNI daemonset
 SRIOV CNI support both AMD64 and ARM64:
+https://github.com/k8snetworkplumbingwg/sriov-cni/pkgs/container/sriov-cni, select OS ARM64
 https://github.com/k8snetworkplumbingwg/sriov-cni/pkgs/container/sriov-cni/versions
 
 ## AMD64
@@ -702,6 +703,29 @@ drwxr-xr-x. 3 root root       17 May  1 01:13 ..
 -rwxr-xr-x. 1 root root  4103500 May  8 18:40 vrf
 -rwxr-xr-x. 1 root root 62276195 May  9 03:56 whereabouts
 [root@ip-10-0-58-16 bin]# 
+
+## ARM64
+https://github.com/k8snetworkplumbingwg/sriov-cni/pkgs/container/sriov-cni, select OS ARM64
+docker pull ghcr.io/k8snetworkplumbingwg/sriov-cni:3271b0f594b6d814f2e83a43589d99c6bd1882f3@sha256:cfca98a15f33f0e045849630c4c74d605ae64f41ca6f94efe56f6bcb291759e2
+
+ubuntu@cloud9-sigitp2:~/environment/gv3-outposts-server-sjc38$ docker pull ghcr.io/k8snetworkplumbingwg/sriov-cni:3271b0f594b6d814f2e83a43589d99c6bd1882f3@sha256:cfca98a15f33f0e045849630c4c74d605ae64f41ca6f94efe56f6bcb291759e2
+ghcr.io/k8snetworkplumbingwg/sriov-cni@sha256:cfca98a15f33f0e045849630c4c74d605ae64f41ca6f94efe56f6bcb291759e2: Pulling from k8snetworkplumbingwg/sriov-cni
+6e771e15690e: Pull complete 
+ade896a11b43: Pull complete 
+48a6bed01cc9: Pull complete 
+Digest: sha256:cfca98a15f33f0e045849630c4c74d605ae64f41ca6f94efe56f6bcb291759e2
+Status: Downloaded newer image for ghcr.io/k8snetworkplumbingwg/sriov-cni@sha256:cfca98a15f33f0e045849630c4c74d605ae64f41ca6f94efe56f6bcb291759e2
+ghcr.io/k8snetworkplumbingwg/sriov-cni:3271b0f594b6d814f2e83a43589d99c6bd1882f3@sha256:cfca98a15f33f0e045849630c4c74d605ae64f41ca6f94efe56f6bcb291759e2
+ubuntu@cloud9-sigitp2:~/environment/gv3-outposts-server-sjc38$ 
+
+ubuntu@cloud9-sigitp2:~/environment/gv3-outposts-server-sjc38$ docker images
+REPOSITORY                                                         TAG                      IMAGE ID       CREATED        SIZE
+ghcr.io/k8snetworkplumbingwg/sriov-cni                             <none>                   93a1a68cbe23   10 days ago    13.1MB
+ghcr.io/k8snetworkplumbingwg/sriov-cni                             <none>                   4aa3d9f8b453   3 months ago   13.1MB
+ghcr.io/k8snetworkplumbingwg/sriov-cni                             latest-amd64             a09549570698   3 months ago   12.8MB
+291615555612.dkr.ecr.us-east-1.amazonaws.com/sigitp-ecr            ubuntu-mlnx-dpdk-amd64   87e987b1aaa3   8 months ago   1.37GB
+public.ecr.aws/h8q5n8w4/sigitp-ecr-public/ubuntu-mlnx-dpdk-amd64   latest                   87e987b1aaa3   8 months ago   1.37GB
+ubuntu@cloud9-sigitp2:~/environment/gv3-outposts-server-sjc38$ 
 
 
 6. Deploy NAD CRDs
