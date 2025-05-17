@@ -641,6 +641,8 @@ ubuntu@cloud9-sigitp2:~/environment/gv3-outposts-server-sjc38$
 
 
 5. Deploy SRIOV-CNI daemonset
+
+## AMD64
 ubuntu@ip-10-0-10-242:~/environment/dpdk-testpmd-bmn-cluster$ kubectl apply -f https://raw.githubusercontent.com/k8snetworkplumbingwg/sriov-cni/master/images/sriov-cni-daemonset.yaml
 daemonset.apps/kube-sriov-cni-ds created
 ubuntu@ip-10-0-10-242:~/environment/dpdk-testpmd-bmn-cluster$
@@ -665,6 +667,41 @@ kube-system                metrics-server-6d67d68f67-v7fb7                      
 monitoring                 sriov-metrics-exporter-hfkxd                                      1/1     Running   1 (9h ago)   32h
 prometheus-node-exporter   prometheus-node-exporter-tcw6x                                    1/1     Running   1 (9h ago)   37h
 ubuntu@ip-10-0-10-242:~/environment/dpdk-testpmd-bmn-cluster$
+
+## SRIOV CNI binary inside the host
+[root@ip-10-0-58-16 bin]# ls -la
+total 225688
+drwxr-xr-x. 2 root root    16384 May  9 03:56 .
+drwxr-xr-x. 3 root root       17 May  1 01:13 ..
+-rw-r--r--. 1 root root    11357 May  8 18:40 LICENSE
+-rw-r--r--. 1 root root     2343 May  8 18:40 README.md
+-rwxr-xr-x. 1 root root 20304193 May  8 18:40 aws-cni
+-rwxr-xr-x. 1 root root    32354 May  8 18:40 aws-cni-support.sh
+-rwxr-xr-x. 1 root root  4272898 May  8 18:40 bandwidth
+-rwxr-xr-x. 1 root root  4788191 May  8 18:40 bridge
+-rwxr-xr-x. 1 root root 11419738 May  8 18:40 dhcp
+-rwxr-xr-x. 1 root root  4424930 May  8 18:40 dummy
+-rwxr-xr-x. 1 root root 11731265 May  8 18:40 egress-cni
+-rwxr-xr-x. 1 root root  4943846 May  8 18:40 firewall
+-rwxr-xr-x. 1 root root  4345300 May  8 18:40 host-device
+-rwxr-xr-x. 1 root root  3679575 May  8 18:40 host-local
+-rwxr-xr-x. 1 root root  4443729 May  8 18:40 ipvlan
+-rwxr-xr-x. 1 root root  3750882 May  8 18:40 loopback
+-rwxr-xr-x. 1 root root  4480422 May  8 18:40 macvlan
+-rwxr-xr-x. 1 root root 48218431 May  9 03:42 multus-shim
+-rwxr-xr-x. 1 root root  4228332 May  8 18:40 portmap
+-rwxr-xr-x. 1 root root  4602833 May  8 18:40 ptp
+-rwxr-xr-x. 1 root root  3957166 May  8 18:40 sbr
+-rwxr-xr-x. 1 root root  5006876 May  9 03:45 sriov
+-rwxr-xr-x. 1 root root  3223947 May  8 18:40 static
+-rwxr-xr-x. 1 root root  4503742 May  8 18:40 tap
+-rwxr-xr-x. 1 root root  3838043 May  8 18:40 tuning
+-rwxr-xr-x. 1 root root  4440528 May  8 18:40 vlan
+-rwxr-xr-x. 1 root root  4103500 May  8 18:40 vrf
+-rwxr-xr-x. 1 root root 62276195 May  9 03:56 whereabouts
+[root@ip-10-0-58-16 bin]# 
+
+
 6. Deploy NAD CRDs
 ubuntu@ip-10-0-10-242:~/environment/dpdk-testpmd-bmn-cluster$ kubectl apply -f nad-n3-1001-numa1p0-pf3.yaml
 networkattachmentdefinition.k8s.cni.cncf.io/n3-1001-numa1p0-pf3 created
