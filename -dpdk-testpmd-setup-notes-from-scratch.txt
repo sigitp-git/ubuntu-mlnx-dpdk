@@ -597,7 +597,7 @@ configmap/multus-daemon-config created
 daemonset.apps/kube-multus-ds created
 
 ubuntu@cloud9-sigitp2:~/environment/gv3-outposts-server-sjc38$ kubectl get po -A
-                                                                          NAMESPACE                  NAME                                                              READY   STATUS     RESTARTS       AGE
+NAMESPACE                  NAME                                                              READY   STATUS     RESTARTS       AGE
 amazon-cloudwatch          amazon-cloudwatch-observability-controller-manager-77474b58tq8t   1/1     Running    0              3d19h
 amazon-cloudwatch          cloudwatch-agent-vdznr                                            1/1     Running    1 (3d1h ago)   3d1h
 amazon-cloudwatch          fluent-bit-7d7p5                                                  1/1     Running    0              3d1h
@@ -608,13 +608,14 @@ kube-system                coredns-6b9575c64c-n7w57                             
 kube-system                coredns-6b9575c64c-t468s                                          1/1     Running    0              3d19h
 kube-system                eks-node-monitoring-agent-bl8wx                                   1/1     Running    0              3d1h
 kube-system                eks-pod-identity-agent-r4cpz                                      1/1     Running    0              3d1h
-kube-system                kube-multus-ds-6rrtm                                              0/1     Init:0/1   0              4s
+kube-system                kube-multus-ds-6rrtm                                              0/1     Init:0/1   0              22s
 kube-system                kube-proxy-hjqr7                                                  1/1     Running    0              3d1h
-kube-system                kube-sriov-device-plugin-arm64-44g2p                              1/1     Running    0              7m22s
+kube-system                kube-sriov-device-plugin-arm64-44g2p                              1/1     Running    0              7m40s
 kube-system                metrics-server-6d67d68f67-4lgnv                                   1/1     Running    0              3d19h
 kube-system                metrics-server-6d67d68f67-79qfv                                   1/1     Running    0              3d19h
 monitoring                 sriov-metrics-exporter-2zgb4                                      1/1     Running    0              3d1h
 prometheus-node-exporter   prometheus-node-exporter-6295l                                    1/1     Running    0              3d1h
+
 
 ubuntu@cloud9-sigitp2:~/environment/gv3-outposts-server-sjc38$ kubectl get po -A
 NAMESPACE                  NAME                                                              READY   STATUS    RESTARTS       AGE
