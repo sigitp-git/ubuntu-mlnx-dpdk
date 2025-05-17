@@ -749,6 +749,7 @@ ubuntu@cloud9-sigitp2:~/environment/gv3-outposts-server-sjc38$
 ubuntu@cloud9-sigitp2:~/environment/gv3-outposts-server-sjc38$ kubectl apply -f https://raw.githubusercontent.com/sigitp-git/outposts-server-eks-worker-node/refs/heads/main/sriov-cni-daemonset-arm64.yaml
 daemonset.apps/kube-sriov-cni-ds created
 
+
 ubuntu@cloud9-sigitp2:~/environment/gv3-outposts-server-sjc38$ kubectl get po -A                                                                          NAMESPACE                  NAME                                                              READY   STATUS              RESTARTS       AGE
 amazon-cloudwatch          amazon-cloudwatch-observability-controller-manager-77474b58tq8t   1/1     Running             0              3d20h
 amazon-cloudwatch          cloudwatch-agent-vdznr                                            1/1     Running             1 (3d2h ago)   3d2h
@@ -760,15 +761,15 @@ kube-system                coredns-6b9575c64c-n7w57                             
 kube-system                coredns-6b9575c64c-t468s                                          1/1     Running             0              3d20h
 kube-system                eks-node-monitoring-agent-bl8wx                                   1/1     Running             0              3d2h
 kube-system                eks-pod-identity-agent-r4cpz                                      1/1     Running             0              3d2h
-kube-system                kube-multus-ds-6rrtm                                              1/1     Running             0              60m
+kube-system                kube-multus-ds-6rrtm                                              1/1     Running             0              88m
 kube-system                kube-proxy-hjqr7                                                  1/1     Running             0              3d2h
-kube-system                kube-sriov-cni-ds-4qr7b                                           0/1     ContainerCreating   0              2s
-kube-system                kube-sriov-device-plugin-arm64-44g2p                              1/1     Running             0              67m
+kube-system                kube-sriov-cni-ds-rz47v                                           0/1     ContainerCreating   0              5s
+kube-system                kube-sriov-device-plugin-arm64-44g2p                              1/1     Running             0              96m
 kube-system                metrics-server-6d67d68f67-4lgnv                                   1/1     Running             0              3d20h
 kube-system                metrics-server-6d67d68f67-79qfv                                   1/1     Running             0              3d20h
 monitoring                 sriov-metrics-exporter-2zgb4                                      1/1     Running             0              3d2h
 prometheus-node-exporter   prometheus-node-exporter-6295l                                    1/1     Running             0              3d2h
-ubuntu@cloud9-sigitp2:~/environment/gv3-outposts-server-sjc38$
+ubuntu@cloud9-sigitp2:~/environment/gv3-outposts-server-sjc38$ 
 
 
 6. Deploy NAD CRDs
