@@ -106,6 +106,127 @@ root@ip-10-0-127-239:~#
 
 2. Update SRIOV-DP ConfigMap
 edit the sriov-dp-configmap to use the above PCI addresses
+
+15b3 is vendor id
+101e is device id for VF, note that SRIOV-DP ConfigMap takes device id for VF, not for PF (1021 for CX-7, 101d for CX-6)
+
+## CX-7
+[root@ip-10-0-58-16 ~]# lspci | grep Mell
+0000:05:00.0 Ethernet controller: Mellanox Technologies MT2910 Family [ConnectX-7]
+0000:05:00.1 Ethernet controller: Mellanox Technologies MT2910 Family [ConnectX-7]
+
+[root@ip-10-0-58-16 ~]# lspci -nk | grep 05.00 -A2
+0000:05:00.0 0200: 15b3:1021
+        Subsystem: 15b3:0022
+        Kernel driver in use: mlx5_core
+--
+0000:05:00.1 0200: 15b3:1021
+        Subsystem: 15b3:0022
+        Kernel driver in use: mlx5_core
+--
+0000:05:00.2 0200: 15b3:101e
+        Subsystem: 15b3:0022
+        Kernel driver in use: mlx5_core
+--
+0000:05:00.3 0200: 15b3:101e
+        Subsystem: 15b3:0022
+        Kernel driver in use: mlx5_core
+--
+0000:05:00.4 0200: 15b3:101e
+        Subsystem: 15b3:0022
+        Kernel driver in use: mlx5_core
+--
+0000:05:00.5 0200: 15b3:101e
+        Subsystem: 15b3:0022
+        Kernel driver in use: mlx5_core
+--
+0000:05:00.6 0200: 15b3:101e
+        Subsystem: 15b3:0022
+        Kernel driver in use: mlx5_core
+--
+0000:05:00.7 0200: 15b3:101e
+        Subsystem: 15b3:0022
+        Kernel driver in use: mlx5_core
+--
+0001:05:00.0 0200: 15b3:1021
+        Subsystem: 15b3:0022
+        Kernel driver in use: mlx5_core
+--
+0001:05:00.1 0200: 15b3:1021
+        Subsystem: 15b3:0022
+        Kernel driver in use: mlx5_core
+--
+0001:05:00.2 0200: 15b3:101e
+        Subsystem: 15b3:0022
+        Kernel driver in use: mlx5_core
+--
+0001:05:00.3 0200: 15b3:101e
+        Subsystem: 15b3:0022
+        Kernel driver in use: mlx5_core
+--
+0001:05:00.4 0200: 15b3:101e
+        Subsystem: 15b3:0022
+        Kernel driver in use: mlx5_core
+--
+0001:05:00.5 0200: 15b3:101e
+        Subsystem: 15b3:0022
+        Kernel driver in use: mlx5_core
+--
+0001:05:00.6 0200: 15b3:101e
+        Subsystem: 15b3:0022
+        Kernel driver in use: mlx5_core
+--
+0001:05:00.7 0200: 15b3:101e
+        Subsystem: 15b3:0022
+        Kernel driver in use: mlx5_core
+[root@ip-10-0-58-16 ~]# lspci | grep Mell
+
+## CX-6
+root@ip-10-0-127-239:~# lspci | grep Mell
+0000:05:00.0 Ethernet controller: Mellanox Technologies MT2892 Family [ConnectX-6 Dx]
+0000:05:00.1 Ethernet controller: Mellanox Technologies MT2892 Family [ConnectX-6 Dx]
+
+root@ip-10-0-127-239:~# lspci -nk | grep 05.00 -A2
+0000:05:00.0 0200: 15b3:101d
+        Subsystem: 15b3:0042
+        Kernel driver in use: mlx5_core
+--
+0000:05:00.1 0200: 15b3:101d
+        Subsystem: 15b3:0042
+        Kernel driver in use: mlx5_core
+--
+0000:05:00.2 0200: 15b3:101e
+        Subsystem: 15b3:0042
+        Kernel driver in use: mlx5_core
+--
+0000:05:00.3 0200: 15b3:101e
+        Subsystem: 15b3:0042
+        Kernel driver in use: mlx5_core
+--
+0000:05:00.4 0200: 15b3:101e
+        Subsystem: 15b3:0042
+        Kernel driver in use: mlx5_core
+--
+0000:05:00.5 0200: 15b3:101e
+        Subsystem: 15b3:0042
+        Kernel driver in use: mlx5_core
+--
+0000:05:00.6 0200: 15b3:101e
+        Subsystem: 15b3:0042
+        Kernel driver in use: mlx5_core
+--
+0000:05:00.7 0200: 15b3:101e
+        Subsystem: 15b3:0042
+        Kernel driver in use: mlx5_core
+--
+0003:05:00.0 0280: 177d:bc00
+        Subsystem: 177d:bc00
+0003:05:00.1 0280: 177d:ef00
+        Subsystem: 177d:bc00
+0003:07:00.0 0280: 177d:bc00
+root@ip-10-0-127-239:~# 
+
+
 ubuntu@ip-10-0-10-242:~/environment/dpdk-testpmd-bmn-cluster$ kubectl apply -f sriov-dp-configmap-pf-split.yaml
 configmap/sriovdp-config created
 3. Deploy SRIOV-DP daemonset
