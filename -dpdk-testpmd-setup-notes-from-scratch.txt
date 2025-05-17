@@ -641,6 +641,8 @@ ubuntu@cloud9-sigitp2:~/environment/gv3-outposts-server-sjc38$
 
 
 5. Deploy SRIOV-CNI daemonset
+SRIOV CNI support both AMD64 and ARM64:
+https://github.com/k8snetworkplumbingwg/sriov-cni/pkgs/container/sriov-cni/versions
 
 ## AMD64
 ubuntu@ip-10-0-10-242:~/environment/dpdk-testpmd-bmn-cluster$ kubectl apply -f https://raw.githubusercontent.com/k8snetworkplumbingwg/sriov-cni/master/images/sriov-cni-daemonset.yaml
