@@ -89,7 +89,6 @@ ifconfig enP1s11f1np1 up
 [root@ip-10-0-58-16 ~]#
 
 ### For CX-6
- 
 root@ip-10-0-127-239:~# cat create-virtual-function.sh 
 #!/bin/bash
 apt install -y lshw
@@ -229,8 +228,9 @@ root@ip-10-0-127-239:~#
 
 ubuntu@ip-10-0-10-242:~/environment/dpdk-testpmd-bmn-cluster$ kubectl apply -f sriov-dp-configmap-pf-split.yaml
 configmap/sriovdp-config created
+
 3. Deploy SRIOV-DP daemonset
-2 options of sriovdp-daemonsets upstream:
+Two options of sriovdp-daemonsets upstream:
 -----------------------------------------
 https://raw.githubusercontent.com/k8snetworkplumbingwg/sriov-network-device-plugin/refs/heads/master/deployments/sriovdp-daemonset.yaml
 https://raw.githubusercontent.com/sigitp-git/outposts-server-eks-worker-node/main/sriov-device-plugin-ds-incl-arm64.yaml
