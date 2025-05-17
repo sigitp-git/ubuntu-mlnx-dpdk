@@ -554,6 +554,9 @@ ubuntu@cloud9-sigitp2:~/environment/gv3-outposts-server-sjc38$
 
 
 4. Deploy Multus daemonset thick client
+The thick client deployment works on both AMD64 and ARM64
+
+## AMD64
 ubuntu@ip-10-0-10-242:~/environment/dpdk-testpmd-bmn-cluster$ kubectl apply -f https://raw.githubusercontent.com/aws/amazon-vpc-cni-k8s/refs/heads/master/config/multus/v4.1.4-eksbuild.3/multus-daemonset-thick.yml
 customresourcedefinition.apiextensions.k8s.io/network-attachment-definitions.k8s.cni.cncf.io created
 clusterrole.rbac.authorization.k8s.io/multus created
@@ -582,6 +585,57 @@ kube-system                metrics-server-6d67d68f67-v7fb7                      
 monitoring                 sriov-metrics-exporter-hfkxd                                      1/1     Running   1 (9h ago)   32h
 prometheus-node-exporter   prometheus-node-exporter-tcw6x                                    1/1     Running   1 (9h ago)   37h
 ubuntu@ip-10-0-10-242:~/environment/dpdk-testpmd-bmn-cluster$
+
+## ARM64
+ubuntu@cloud9-sigitp2:~/environment/gv3-outposts-server-sjc38$ kubectl apply -f https://raw.githubusercontent.com/aws/amazon-vpc-cni-k8s/refs/heads/master/config/multus/v4.1.4-eksbuild.3/multus-daemonset-thick.yml
+customresourcedefinition.apiextensions.k8s.io/network-attachment-definitions.k8s.cni.cncf.io created
+clusterrole.rbac.authorization.k8s.io/multus created
+clusterrolebinding.rbac.authorization.k8s.io/multus created
+serviceaccount/multus created
+configmap/multus-daemon-config created
+daemonset.apps/kube-multus-ds created
+ubuntu@cloud9-sigitp2:~/environment/gv3-outposts-server-sjc38$ kubectl get po -A                                                                          NAMESPACE                  NAME                                                              READY   STATUS     RESTARTS       AGE
+amazon-cloudwatch          amazon-cloudwatch-observability-controller-manager-77474b58tq8t   1/1     Running    0              3d19h
+amazon-cloudwatch          cloudwatch-agent-vdznr                                            1/1     Running    1 (3d1h ago)   3d1h
+amazon-cloudwatch          fluent-bit-7d7p5                                                  1/1     Running    0              3d1h
+external-dns               external-dns-5f6b4b64c9-gzpwc                                     1/1     Running    0              3d19h
+kube-state-metrics         kube-state-metrics-5cc79c46bb-s4k4s                               1/1     Running    0              3d19h
+kube-system                aws-node-czm6j                                                    2/2     Running    0              3d1h
+kube-system                coredns-6b9575c64c-n7w57                                          1/1     Running    0              3d19h
+kube-system                coredns-6b9575c64c-t468s                                          1/1     Running    0              3d19h
+kube-system                eks-node-monitoring-agent-bl8wx                                   1/1     Running    0              3d1h
+kube-system                eks-pod-identity-agent-r4cpz                                      1/1     Running    0              3d1h
+kube-system                kube-multus-ds-6rrtm                                              0/1     Init:0/1   0              4s
+kube-system                kube-proxy-hjqr7                                                  1/1     Running    0              3d1h
+kube-system                kube-sriov-device-plugin-arm64-44g2p                              1/1     Running    0              7m22s
+kube-system                metrics-server-6d67d68f67-4lgnv                                   1/1     Running    0              3d19h
+kube-system                metrics-server-6d67d68f67-79qfv                                   1/1     Running    0              3d19h
+monitoring                 sriov-metrics-exporter-2zgb4                                      1/1     Running    0              3d1h
+prometheus-node-exporter   prometheus-node-exporter-6295l                                    1/1     Running    0              3d1h
+
+ubuntu@cloud9-sigitp2:~/environment/gv3-outposts-server-sjc38$ kubectl get po -A
+NAMESPACE                  NAME                                                              READY   STATUS    RESTARTS       AGE
+amazon-cloudwatch          amazon-cloudwatch-observability-controller-manager-77474b58tq8t   1/1     Running   0              3d19h
+amazon-cloudwatch          cloudwatch-agent-vdznr                                            1/1     Running   1 (3d1h ago)   3d1h
+amazon-cloudwatch          fluent-bit-7d7p5                                                  1/1     Running   0              3d1h
+external-dns               external-dns-5f6b4b64c9-gzpwc                                     1/1     Running   0              3d19h
+kube-state-metrics         kube-state-metrics-5cc79c46bb-s4k4s                               1/1     Running   0              3d19h
+kube-system                aws-node-czm6j                                                    2/2     Running   0              3d1h
+kube-system                coredns-6b9575c64c-n7w57                                          1/1     Running   0              3d19h
+kube-system                coredns-6b9575c64c-t468s                                          1/1     Running   0              3d19h
+kube-system                eks-node-monitoring-agent-bl8wx                                   1/1     Running   0              3d1h
+kube-system                eks-pod-identity-agent-r4cpz                                      1/1     Running   0              3d1h
+kube-system                kube-multus-ds-6rrtm                                              1/1     Running   0              66s
+kube-system                kube-proxy-hjqr7                                                  1/1     Running   0              3d1h
+kube-system                kube-sriov-device-plugin-arm64-44g2p                              1/1     Running   0              8m24s
+kube-system                metrics-server-6d67d68f67-4lgnv                                   1/1     Running   0              3d19h
+kube-system                metrics-server-6d67d68f67-79qfv                                   1/1     Running   0              3d19h
+monitoring                 sriov-metrics-exporter-2zgb4                                      1/1     Running   0              3d1h
+prometheus-node-exporter   prometheus-node-exporter-6295l                                    1/1     Running   0              3d1h
+ubuntu@cloud9-sigitp2:~/environment/gv3-outposts-server-sjc38$ 
+
+
+
 5. Deploy SRIOV-CNI daemonset
 ubuntu@ip-10-0-10-242:~/environment/dpdk-testpmd-bmn-cluster$ kubectl apply -f https://raw.githubusercontent.com/k8snetworkplumbingwg/sriov-cni/master/images/sriov-cni-daemonset.yaml
 daemonset.apps/kube-sriov-cni-ds created
