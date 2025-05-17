@@ -9,6 +9,8 @@ https://github.com/sigitp-git/outposts-server-eks-worker-node/blob/main/2-eks-wo
   sudo sed -i 's/selinux=1/& default_hugepagesz=1GB hugepagesz=1G hugepages=32/g' /etc/default/grub
   sudo grub2-mkconfig -o /boot/grub2/grub.cfg
 - Add userdata script to create SRIOV-VF, persists after worker node restart
+
+
 1. Check PCI ID of the Mellanox Cards
 [root@ip-10-0-58-16 ~]# lspci | grep Mellanox
 0000:05:00.0 Ethernet controller: Mellanox Technologies MT2910 Family [ConnectX-7]
@@ -101,7 +103,8 @@ do
     echo ifconfig ${interface} up
     echo ${NUMBER_VFS} > /sys/class/net/${interface}/device/sriov_numvfs
 done
-root@ip-10-0-127-239:~# 
+root@ip-10-0-127-239:~#
+
 
 2. Update SRIOV-DP ConfigMap
 edit the sriov-dp-configmap to use the above PCI addresses
@@ -229,17 +232,21 @@ root@ip-10-0-127-239:~#
 ubuntu@ip-10-0-10-242:~/environment/dpdk-testpmd-bmn-cluster$ kubectl apply -f sriov-dp-configmap-pf-split.yaml
 configmap/sriovdp-config created
 
+
 3. Deploy SRIOV-DP daemonset
 Two options of sriovdp-daemonsets upstream:
 -----------------------------------------
 https://raw.githubusercontent.com/k8snetworkplumbingwg/sriov-network-device-plugin/refs/heads/master/deployments/sriovdp-daemonset.yaml
 https://raw.githubusercontent.com/sigitp-git/outposts-server-eks-worker-node/main/sriov-device-plugin-ds-incl-arm64.yaml
+
 internal AWS plugins:
 ---------------------- 
 https://quip-amazon.com/6u2YOm2f14va/Kinara-EKS-Addons
 https://quip-amazon.com/xoTfAZF6B85O/Project-Kinara-SRIOV-Addon-Test-10072024
 using upstream plugin:
+
 ----------------------
+## CX-7 on Intel/AMD64
 ubuntu@ip-10-0-10-242:~/environment/dpdk-testpmd-bmn-cluster$ kubectl apply -f https://raw.githubusercontent.com/sigitp-git/outposts-server-eks-worker-node/main/sriov-device-plugin-ds-incl-arm64.yaml
 serviceaccount/sriov-device-plugin created
 daemonset.apps/kube-sriov-device-plugin-amd64 created
@@ -270,6 +277,8 @@ kube-system                metrics-server-6d67d68f67-v7fb7                      
 monitoring                 sriov-metrics-exporter-hfkxd                                      1/1     Running   1 (67m ago)   24h
 prometheus-node-exporter   prometheus-node-exporter-tcw6x                                    1/1     Running   1 (67m ago)   29h
 ubuntu@ip-10-0-10-242:~/environment/dpdk-testpmd-bmn-cluster$
+
+## VF plumbed for the node
 ubuntu@ip-10-0-10-242:~/environment/dpdk-testpmd-bmn-cluster$ kubectl describe node ip-10-0-58-16.ec2.internal
 Name:               ip-10-0-58-16.ec2.internal
 Roles:              <none>
@@ -399,6 +408,151 @@ Events:
   Normal   NodeHasSufficientPID     33m (x2 over 33m)  kubelet  Node ip-10-0-58-16.ec2.internal status is now: NodeHasSufficientPID
   Normal   NodeAllocatableEnforced  33m                kubelet  Updated Node Allocatable limit across pods
 ubuntu@ip-10-0-10-242:~/environment/dpdk-testpmd-bmn-cluster$
+
+----------------------
+## CX-6 on Graviton/ARM64
+ubuntu@cloud9-sigitp2:~/environment/gv3-outposts-server-sjc38$ kubectl apply -f https://raw.githubusercontent.com/sigitp-git/outposts-server-eks-worker-node/main/sriov-device-plugin-ds-incl-arm64.yaml
+serviceaccount/sriov-device-plugin created
+daemonset.apps/kube-sriov-device-plugin-amd64 created
+daemonset.apps/kube-sriov-device-plugin-ppc64le created
+daemonset.apps/kube-sriov-device-plugin-arm64 created
+ubuntu@cloud9-sigitp2:~/environment/gv3-outposts-server-sjc38$ kubectl get po -A
+NAMESPACE                  NAME                                                              READY   STATUS    RESTARTS       AGE
+amazon-cloudwatch          amazon-cloudwatch-observability-controller-manager-77474b58tq8t   1/1     Running   0              3d18h
+amazon-cloudwatch          cloudwatch-agent-vdznr                                            1/1     Running   1 (3d1h ago)   3d1h
+amazon-cloudwatch          fluent-bit-7d7p5                                                  1/1     Running   0              3d1h
+external-dns               external-dns-5f6b4b64c9-gzpwc                                     1/1     Running   0              3d18h
+kube-state-metrics         kube-state-metrics-5cc79c46bb-s4k4s                               1/1     Running   0              3d18h
+kube-system                aws-node-czm6j                                                    2/2     Running   0              3d1h
+kube-system                coredns-6b9575c64c-n7w57                                          1/1     Running   0              3d18h
+kube-system                coredns-6b9575c64c-t468s                                          1/1     Running   0              3d18h
+kube-system                eks-node-monitoring-agent-bl8wx                                   1/1     Running   0              3d1h
+kube-system                eks-pod-identity-agent-r4cpz                                      1/1     Running   0              3d1h
+kube-system                kube-proxy-hjqr7                                                  1/1     Running   0              3d1h
+kube-system                kube-sriov-device-plugin-arm64-44g2p                              1/1     Running   0              6s
+kube-system                metrics-server-6d67d68f67-4lgnv                                   1/1     Running   0              3d18h
+kube-system                metrics-server-6d67d68f67-79qfv                                   1/1     Running   0              3d18h
+monitoring                 sriov-metrics-exporter-2zgb4                                      1/1     Running   0              3d1h
+prometheus-node-exporter   prometheus-node-exporter-6295l                                    1/1     Running   0              3d1h
+
+## VF plumbed for the node
+ubuntu@cloud9-sigitp2:~/environment/gv3-outposts-server-sjc38$ kubectl describe node ip-10-0-127-239.ec2.internal
+Name:               ip-10-0-127-239.ec2.internal
+Roles:              <none>
+Labels:             beta.kubernetes.io/arch=arm64
+                    beta.kubernetes.io/instance-type=ran1gd.metal
+                    beta.kubernetes.io/os=linux
+                    failure-domain.beta.kubernetes.io/region=us-east-1
+                    failure-domain.beta.kubernetes.io/zone=us-east-1a
+                    feature.node.kubernetes.io/network-sriov.capable=true
+                    is_worker=true
+                    k8s.io/cloud-provider-aws=a86e96846d12987a40a3489e34fc1703
+                    kubernetes.io/arch=arm64
+                    kubernetes.io/hostname=ip-10-0-127-239.ec2.internal
+                    kubernetes.io/os=linux
+                    node.kubernetes.io/instance-type=ran1gd.metal
+                    node.longhorn.io/create-default-disk=true
+                    storage=longhorn
+                    topology.k8s.aws/zone-id=use1-az6
+                    topology.kubernetes.io/region=us-east-1
+                    topology.kubernetes.io/zone=us-east-1a
+Annotations:        alpha.kubernetes.io/provided-node-ip: 10.0.127.239
+                    node.alpha.kubernetes.io/ttl: 0
+                    volumes.kubernetes.io/controller-managed-attach-detach: true
+CreationTimestamp:  Wed, 14 May 2025 16:45:42 +0000
+Taints:             <none>
+Unschedulable:      false
+Lease:
+  HolderIdentity:  ip-10-0-127-239.ec2.internal
+  AcquireTime:     <unset>
+  RenewTime:       Sat, 17 May 2025 17:54:00 +0000
+Conditions:
+  Type                    Status  LastHeartbeatTime                 LastTransitionTime                Reason                       Message
+  ----                    ------  -----------------                 ------------------                ------                       -------
+  MemoryPressure          False   Sat, 17 May 2025 17:50:01 +0000   Wed, 14 May 2025 16:45:42 +0000   KubeletHasSufficientMemory   kubelet has sufficient memory available
+  DiskPressure            False   Sat, 17 May 2025 17:50:01 +0000   Wed, 14 May 2025 16:45:42 +0000   KubeletHasNoDiskPressure     kubelet has no disk pressure
+  PIDPressure             False   Sat, 17 May 2025 17:50:01 +0000   Wed, 14 May 2025 16:45:42 +0000   KubeletHasSufficientPID      kubelet has sufficient PID available
+  Ready                   True    Sat, 17 May 2025 17:50:01 +0000   Wed, 14 May 2025 16:46:23 +0000   KubeletReady                 kubelet is posting ready status
+  ContainerRuntimeReady   True    Thu, 15 May 2025 03:06:08 +0000   Wed, 14 May 2025 16:46:08 +0000   ContainerRuntimeIsReady      Monitoring for the ContainerRuntime system is active
+  StorageReady            True    Thu, 15 May 2025 03:06:08 +0000   Wed, 14 May 2025 16:46:08 +0000   DiskIsReady                  Monitoring for the Disk system is active
+  NetworkingReady         False   Thu, 15 May 2025 03:06:08 +0000   Wed, 14 May 2025 17:11:08 +0000   InterfaceNotUp               Interface "enp5s0f1np1" is not up
+  KernelReady             True    Thu, 15 May 2025 03:06:08 +0000   Wed, 14 May 2025 16:46:08 +0000   KernelIsReady                Monitoring for the Kernel system is active
+Addresses:
+  InternalIP:   10.0.127.239
+  ExternalIP:   184.72.82.201
+  InternalDNS:  ip-10-0-127-239.ec2.internal
+  Hostname:     ip-10-0-127-239.ec2.internal
+  ExternalDNS:  ec2-184-72-82-201.compute-1.amazonaws.com
+Capacity:
+  amazon.com/bmn-mlx-sriov-pf1:  8
+  amazon.com/bmn-mlx-sriov-pf2:  8
+  cpu:                           64
+  ephemeral-storage:             908274368Ki
+  hugepages-1Gi:                 0
+  hugepages-2Mi:                 0
+  hugepages-32Mi:                0
+  hugepages-64Ki:                0
+  memory:                        263378616Ki
+  pods:                          737
+Allocatable:
+  amazon.com/bmn-mlx-sriov-pf1:  8
+  amazon.com/bmn-mlx-sriov-pf2:  8
+  cpu:                           63770m
+  ephemeral-storage:             835991914339
+  hugepages-1Gi:                 0
+  hugepages-2Mi:                 0
+  hugepages-32Mi:                0
+  hugepages-64Ki:                0
+  memory:                        254713528Ki
+  pods:                          737
+System Info:
+  Machine ID:                 e3e8fcf974444c51b67ec126263df8ae
+  System UUID:                ec290dc0-2312-af71-5555-b73f025f3b05
+  Boot ID:                    67a22448-1d83-4940-bc4c-5fdb7780a3c9
+  Kernel Version:             6.8.0-1027-aws
+  OS Image:                   Ubuntu 22.04.5 LTS
+  Operating System:           linux
+  Architecture:               arm64
+  Container Runtime Version:  containerd://1.7.24
+  Kubelet Version:            v1.32.3
+  Kube-Proxy Version:         v1.32.3
+ProviderID:                   aws:///us-east-1a/i-09347d58bcbd243b5
+Non-terminated Pods:          (16 in total)
+  Namespace                   Name                                                               CPU Requests  CPU Limits  Memory Requests  Memory Limits  Age
+  ---------                   ----                                                               ------------  ----------  ---------------  -------------  ---
+  amazon-cloudwatch           amazon-cloudwatch-observability-controller-manager-77474b58tq8t    100m (0%)     0 (0%)      64Mi (0%)        0 (0%)         3d19h
+  amazon-cloudwatch           cloudwatch-agent-vdznr                                             250m (0%)     500m (0%)   128Mi (0%)       512Mi (0%)     3d1h
+  amazon-cloudwatch           fluent-bit-7d7p5                                                   50m (0%)      500m (0%)   25Mi (0%)        250Mi (0%)     3d1h
+  external-dns                external-dns-5f6b4b64c9-gzpwc                                      10m (0%)      0 (0%)      32Mi (0%)        64Mi (0%)      3d19h
+  kube-state-metrics          kube-state-metrics-5cc79c46bb-s4k4s                                100m (0%)     0 (0%)      250Mi (0%)       400Mi (0%)     3d19h
+  kube-system                 aws-node-czm6j                                                     50m (0%)      0 (0%)      0 (0%)           0 (0%)         3d1h
+  kube-system                 coredns-6b9575c64c-n7w57                                           100m (0%)     0 (0%)      70Mi (0%)        170Mi (0%)     3d19h
+  kube-system                 coredns-6b9575c64c-t468s                                           100m (0%)     0 (0%)      70Mi (0%)        170Mi (0%)     3d19h
+  kube-system                 eks-node-monitoring-agent-bl8wx                                    10m (0%)      250m (0%)   30Mi (0%)        100Mi (0%)     3d1h
+  kube-system                 eks-pod-identity-agent-r4cpz                                       0 (0%)        0 (0%)      0 (0%)           0 (0%)         3d1h
+  kube-system                 kube-proxy-hjqr7                                                   100m (0%)     0 (0%)      0 (0%)           0 (0%)         3d1h
+  kube-system                 kube-sriov-device-plugin-arm64-44g2p                               250m (0%)     1 (1%)      40Mi (0%)        200Mi (0%)     4m37s
+  kube-system                 metrics-server-6d67d68f67-4lgnv                                    100m (0%)     0 (0%)      200Mi (0%)       400Mi (0%)     3d19h
+  kube-system                 metrics-server-6d67d68f67-79qfv                                    100m (0%)     0 (0%)      200Mi (0%)       400Mi (0%)     3d19h
+  monitoring                  sriov-metrics-exporter-2zgb4                                       100m (0%)     100m (0%)   100Mi (0%)       100Mi (0%)     3d1h
+  prometheus-node-exporter    prometheus-node-exporter-6295l                                     100m (0%)     0 (0%)      30Mi (0%)        50Mi (0%)      3d1h
+Allocated resources:
+  (Total limits may be over 100 percent, i.e., overcommitted.)
+  Resource                      Requests     Limits
+  --------                      --------     ------
+  cpu                           1520m (2%)   2350m (3%)
+  memory                        1239Mi (0%)  2816Mi (1%)
+  ephemeral-storage             0 (0%)       0 (0%)
+  hugepages-1Gi                 0 (0%)       0 (0%)
+  hugepages-2Mi                 0 (0%)       0 (0%)
+  hugepages-32Mi                0 (0%)       0 (0%)
+  hugepages-64Ki                0 (0%)       0 (0%)
+  amazon.com/bmn-mlx-sriov-pf1  0            0
+  amazon.com/bmn-mlx-sriov-pf2  0            0
+Events:                         <none>
+ubuntu@cloud9-sigitp2:~/environment/gv3-outposts-server-sjc38$ 
+
+
 4. Deploy Multus daemonset thick client
 ubuntu@ip-10-0-10-242:~/environment/dpdk-testpmd-bmn-cluster$ kubectl apply -f https://raw.githubusercontent.com/aws/amazon-vpc-cni-k8s/refs/heads/master/config/multus/v4.1.4-eksbuild.3/multus-daemonset-thick.yml
 customresourcedefinition.apiextensions.k8s.io/network-attachment-definitions.k8s.cni.cncf.io created
