@@ -59,7 +59,11 @@ Jan 10 19:11:22 ip-10-0-48-74.ec2.internal kubelet[3535357]: I0110 19:11:22.9551
 root@ip-10-0-120-194:~# uname -a
 Linux ip-10-0-120-194 6.8.0-1027-aws #29~22.04.1-Ubuntu SMP Sun Mar 30 07:25:53 UTC 2025 aarch64 aarch64 aarch64 GNU/Linux
 
-root@ip-10-0-120-194:~# sudo sed -i 's/selinux=1/& default_hugepagesz=1GB hugepagesz=1G hugepages=32/g' /etc/default/grub
+root@ip-10-0-120-194:~# sudo sed -i 's/quiet splash/& default_hugepagesz=1GB hugepagesz=1G hugepages=32/g' /etc/default/grub
+
+root@ip-10-0-120-194:~# cat /etc/default/grub | grep GRUB_CMDLINE_LINUX_DEFAULT
+GRUB_CMDLINE_LINUX_DEFAULT="quiet splash default_hugepagesz=1GB hugepagesz=1G hugepages=32"
+root@ip-10-0-120-194:~#
 
 root@ip-10-0-120-194:~# sudo update-grub
 Sourcing file `/etc/default/grub'
@@ -75,6 +79,9 @@ Systems on them will not be added to the GRUB boot configuration.
 Check GRUB_DISABLE_OS_PROBER documentation entry.
 Adding boot menu entry for UEFI Firmware Settings ...
 done
+root@ip-10-0-120-194:~#
+
+root@ip-10-0-120-194:~# [sudo shutdown -r now] required for grub update
 
 root@ip-10-0-120-194:~# sysctl -w vm.nr_hugepages=32
 vm.nr_hugepages = 32
