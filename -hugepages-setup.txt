@@ -57,7 +57,7 @@ Jan 10 19:11:22 ip-10-0-48-74.ec2.internal kubelet[3535357]: I0110 19:11:22.9551
 ## UBUNTU
 ==============
 root@ip-10-0-127-239:~# sudo sed -i 's/selinux=1/& default_hugepagesz=1GB hugepagesz=1G hugepages=32/g' /etc/default/grub
-root@ip-10-0-127-239:~# sudo grub-mkconfig -o /boot/grub/grub.cfg
+root@ip-10-0-127-239:~# sudo update-grub
 
 root@ip-10-0-127-239:~# sysctl -w vm.nr_hugepages=32
 vm.nr_hugepages = 32
