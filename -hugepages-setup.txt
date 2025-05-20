@@ -56,64 +56,88 @@ Jan 10 19:11:22 ip-10-0-48-74.ec2.internal kubelet[3535357]: I0110 19:11:22.9551
 
 ## UBUNTU
 ==============
-root@ip-10-0-127-239:~# sudo sed -i 's/selinux=1/& default_hugepagesz=1GB hugepagesz=1G hugepages=32/g' /etc/default/grub
-root@ip-10-0-127-239:~# sudo update-grub
+root@ip-10-0-120-194:~# uname -a
+Linux ip-10-0-120-194 6.8.0-1027-aws #29~22.04.1-Ubuntu SMP Sun Mar 30 07:25:53 UTC 2025 aarch64 aarch64 aarch64 GNU/Linux
 
-root@ip-10-0-127-239:~# sysctl -w vm.nr_hugepages=32
+root@ip-10-0-120-194:~# sudo sed -i 's/selinux=1/& default_hugepagesz=1GB hugepagesz=1G hugepages=32/g' /etc/default/grub
+
+root@ip-10-0-120-194:~# sudo update-grub
+Sourcing file `/etc/default/grub'
+Sourcing file `/etc/default/grub.d/40-force-partuuid.cfg'
+Sourcing file `/etc/default/grub.d/50-cloudimg-settings.cfg'
+Sourcing file `/etc/default/grub.d/init-select.cfg'
+Generating grub configuration file ...
+GRUB_FORCE_PARTUUID is set, will attempt initrdless boot
+Found linux image: /boot/vmlinuz-6.8.0-1027-aws
+Found initrd image: /boot/initrd.img-6.8.0-1027-aws
+Warning: os-prober will not be executed to detect other bootable partitions.
+Systems on them will not be added to the GRUB boot configuration.
+Check GRUB_DISABLE_OS_PROBER documentation entry.
+Adding boot menu entry for UEFI Firmware Settings ...
+done
+
+root@ip-10-0-120-194:~# sysctl -w vm.nr_hugepages=32
 vm.nr_hugepages = 32
 
-root@ip-10-0-127-239:~# echo "vm.nr_hugepages=32" >> /etc/sysctl.conf
-root@ip-10-0-127-239:~# cat /etc/sysctl.conf | grep huge
+root@ip-10-0-120-194:~# echo "vm.nr_hugepages=32" >> /etc/sysctl.conf
+root@ip-10-0-120-194:~# cat /etc/sysctl.conf | grep huge
 vm.nr_hugepages=32
 
-root@ip-10-0-127-239:~# grep HugePages_Total /proc/meminfo
+root@ip-10-0-120-194:~# grep HugePages_Total /proc/meminfo
 HugePages_Total:      32
-root@ip-10-0-127-239:~# grep HugePages_Free /proc/meminfo
+
+root@ip-10-0-120-194:~# grep HugePages_Free /proc/meminfo
 HugePages_Free:       32
 
-root@ip-10-0-127-239:~# systemctl status snap.kubelet-eks.daemon.service
+root@ip-10-0-120-194:~# grep MemFree /proc/meminfo
+MemFree:        256055020 kB
+root@ip-10-0-120-194:~#
+
+root@ip-10-0-120-194:~# systemctl status snap.kubelet-eks.daemon.service
 ● snap.kubelet-eks.daemon.service - Service for snap application kubelet-eks.daemon
      Loaded: loaded (/etc/systemd/system/snap.kubelet-eks.daemon.service; enabled; vendor preset: enabled)
-     Active: active (running) since Wed 2025-05-14 16:45:42 UTC; 5 days ago
-   Main PID: 11007 (kubelet)
-      Tasks: 73 (limit: 308632)
-     Memory: 158.0M
-        CPU: 2h 45min 58.166s
+     Active: active (running) since Tue 2025-05-20 05:10:06 UTC; 8h ago
+   Main PID: 11016 (kubelet)
+      Tasks: 72 (limit: 308632)
+     Memory: 137.8M
+        CPU: 11min 3.127s
      CGroup: /system.slice/snap.kubelet-eks.daemon.service
-             └─11007 /snap/kubelet-eks/259/kubelet --node-labels=node.longhorn.io/create-default-disk=true,storage=longhorn,is_worker=true,feature.node.kubernetes.io/network-sriov.capable
+             └─11016 /snap/kubelet-eks/259/kubelet --node-labels=node.longhorn.io/create-default-disk=true,storage=longhorn,is_worker=true,feature.node.kubernetes.io/network-sriov.capable
 =true --topology-manager-policy=single-numa-node --cpu-manager-policy=static --address=0.0.0.0 --anonymous-auth=false --authentication-token-webhook --authorization-mode=Webhook --cgroup-
 driver=systemd --client-ca-file=/etc/kubernetes/pki/ca.crt --cloud-provider=external --cluster-dns=172.20.0.10 --cluster-domain=cluster.local --config=/etc/kubernetes/kubelet/kubelet-conf
-ig.json --container-runtime-endpoint=unix:///run/containerd/containerd.sock --feature-gates=RotateKubeletServerCertificate=true --hostname-override=ip-10-0-127-239.ec2.internal --image-cr
+ig.json --container-runtime-endpoint=unix:///run/containerd/containerd.sock --feature-gates=RotateKubeletServerCertificate=true --hostname-override=ip-10-0-120-194.ec2.internal --image-cr
 edential-provider-bin-dir=/etc/eks/ecr-credential-provider --image-credential-provider-config=/etc/eks/ecr-credential-provider/config.json --kubeconfig=/var/lib/kubelet/kubeconfig --node-
-ip=10.0.127.239 --pod-infra-container-image=public.ecr.aws/eks-distro/kubernetes/pause:3.5 --register-node --resolv-conf=/run/systemd/resolve/resolv.conf
+ip=10.0.120.194 --pod-infra-container-image=public.ecr.aws/eks-distro/kubernetes/pause:3.5 --register-node --resolv-conf=/run/systemd/resolve/resolv.conf
 
-May 20 02:49:02 ip-10-0-127-239 kubelet-eks.daemon[11007]: I0520 02:49:02.183539   11007 scope.go:117] "RemoveContainer" containerID="2a25fc00803ba5321eb0fbcde9dca5597a743abbc8b1136b776ee
-77ed0f96e53"
-May 20 02:49:02 ip-10-0-127-239 kubelet-eks.daemon[11007]: E0520 02:49:02.183669   11007 pod_workers.go:1301] "Error syncing pod, skipping" err="failed to \"StartContainer\" for \"aws-eks
--nodeagent\" with CrashLoopBackOff: \"back-off 5m0s restarting failed container=aws-eks-nodeagent pod=aws-node-s572p_kube-system(1e3e05c5-dd1f-455e-8956-e40e068478ed)\"" pod="kube-system/
-aws-node-s572p" podUID="1e3e05c5-dd1f-455e-8956-e40e068478ed"
-May 20 02:49:14 ip-10-0-127-239 kubelet-eks.daemon[11007]: I0520 02:49:14.183061   11007 scope.go:117] "RemoveContainer" containerID="2a25fc00803ba5321eb0fbcde9dca5597a743abbc8b1136b776ee
-77ed0f96e53"
-May 20 02:49:14 ip-10-0-127-239 kubelet-eks.daemon[11007]: E0520 02:49:14.183186   11007 pod_workers.go:1301] "Error syncing pod, skipping" err="failed to \"StartContainer\" for \"aws-eks
--nodeagent\" with CrashLoopBackOff: \"back-off 5m0s restarting failed container=aws-eks-nodeagent pod=aws-node-s572p_kube-system(1e3e05c5-dd1f-455e-8956-e40e068478ed)\"" pod="kube-system/
-aws-node-s572p" podUID="1e3e05c5-dd1f-455e-8956-e40e068478ed"
-May 20 02:49:26 ip-10-0-127-239 kubelet-eks.daemon[11007]: I0520 02:49:26.183025   11007 scope.go:117] "RemoveContainer" containerID="2a25fc00803ba5321eb0fbcde9dca5597a743abbc8b1136b776ee
-77ed0f96e53"
-May 20 02:49:26 ip-10-0-127-239 kubelet-eks.daemon[11007]: E0520 02:49:26.183150   11007 pod_workers.go:1301] "Error syncing pod, skipping" err="failed to \"StartContainer\" for \"aws-eks
--nodeagent\" with CrashLoopBackOff: \"back-off 5m0s restarting failed container=aws-eks-nodeagent pod=aws-node-s572p_kube-system(1e3e05c5-dd1f-455e-8956-e40e068478ed)\"" pod="kube-system/
-aws-node-s572p" podUID="1e3e05c5-dd1f-455e-8956-e40e068478ed"
-May 20 02:49:38 ip-10-0-127-239 kubelet-eks.daemon[11007]: I0520 02:49:38.185171   11007 scope.go:117] "RemoveContainer" containerID="2a25fc00803ba5321eb0fbcde9dca5597a743abbc8b1136b776ee
-77ed0f96e53"
-May 20 02:49:38 ip-10-0-127-239 kubelet-eks.daemon[11007]: E0520 02:49:38.185298   11007 pod_workers.go:1301] "Error syncing pod, skipping" err="failed to \"StartContainer\" for \"aws-eks
--nodeagent\" with CrashLoopBackOff: \"back-off 5m0s restarting failed container=aws-eks-nodeagent pod=aws-node-s572p_kube-system(1e3e05c5-dd1f-455e-8956-e40e068478ed)\"" pod="kube-system/
-aws-node-s572p" podUID="1e3e05c5-dd1f-455e-8956-e40e068478ed"
-May 20 02:49:53 ip-10-0-127-239 kubelet-eks.daemon[11007]: I0520 02:49:53.183100   11007 scope.go:117] "RemoveContainer" containerID="2a25fc00803ba5321eb0fbcde9dca5597a743abbc8b1136b776ee
-77ed0f96e53"
-May 20 02:49:53 ip-10-0-127-239 kubelet-eks.daemon[11007]: E0520 02:49:53.183220   11007 pod_workers.go:1301] "Error syncing pod, skipping" err="failed to \"StartContainer\" for \"aws-eks
--nodeagent\" with CrashLoopBackOff: \"back-off 5m0s restarting failed container=aws-eks-nodeagent pod=aws-node-s572p_kube-system(1e3e05c5-dd1f-455e-8956-e40e068478ed)\"" pod="kube-system/
-aws-node-s572p" podUID="1e3e05c5-dd1f-455e-8956-e40e068478ed"
-root@ip-10-0-127-239:~#
+May 20 12:46:27 ip-10-0-120-194 kubelet-eks.daemon[11016]: I0520 12:46:27.686759   11016 scope_container.go:50] "Best TopologyHint" bestHint={"NUMANodeAffinity":null,"Preferred":true} pod
+="kube-system/kube-sriov-device-plugin-arm64-m9qfk" containerName="kube-sriovdp"
+May 20 12:46:27 ip-10-0-120-194 kubelet-eks.daemon[11016]: I0520 12:46:27.686763   11016 scope_container.go:56] "Topology Affinity" bestHint={"NUMANodeAffinity":null,"Preferred":true} pod
+="kube-system/kube-sriov-device-plugin-arm64-m9qfk" containerName="kube-sriovdp"
+May 20 12:46:27 ip-10-0-120-194 kubelet-eks.daemon[11016]: I0520 12:46:27.757407   11016 reconciler_common.go:251] "operationExecutor.VerifyControllerAttachedVolume started for volume \"l
+og\" (UniqueName: \"kubernetes.io/host-path/60790acf-e637-43a9-892b-6cf59b0cb4a1-log\") pod \"kube-sriov-device-plugin-arm64-m9qfk\" (UID: \"60790acf-e637-43a9-892b-6cf59b0cb4a1\") " pod=
+"kube-system/kube-sriov-device-plugin-arm64-m9qfk"
+May 20 12:46:27 ip-10-0-120-194 kubelet-eks.daemon[11016]: I0520 12:46:27.757441   11016 reconciler_common.go:251] "operationExecutor.VerifyControllerAttachedVolume started for volume \"d
+evicesock\" (UniqueName: \"kubernetes.io/host-path/60790acf-e637-43a9-892b-6cf59b0cb4a1-devicesock\") pod \"kube-sriov-device-plugin-arm64-m9qfk\" (UID: \"60790acf-e637-43a9-892b-6cf59b0c
+b4a1\") " pod="kube-system/kube-sriov-device-plugin-arm64-m9qfk"
+May 20 12:46:27 ip-10-0-120-194 kubelet-eks.daemon[11016]: I0520 12:46:27.757457   11016 reconciler_common.go:251] "operationExecutor.VerifyControllerAttachedVolume started for volume \"k
+ube-api-access-j7wrd\" (UniqueName: \"kubernetes.io/projected/60790acf-e637-43a9-892b-6cf59b0cb4a1-kube-api-access-j7wrd\") pod \"kube-sriov-device-plugin-arm64-m9qfk\" (UID: \"60790acf-e
+637-43a9-892b-6cf59b0cb4a1\") " pod="kube-system/kube-sriov-device-plugin-arm64-m9qfk"
+May 20 12:46:27 ip-10-0-120-194 kubelet-eks.daemon[11016]: I0520 12:46:27.757497   11016 reconciler_common.go:251] "operationExecutor.VerifyControllerAttachedVolume started for volume \"c
+onfig-volume\" (UniqueName: \"kubernetes.io/configmap/60790acf-e637-43a9-892b-6cf59b0cb4a1-config-volume\") pod \"kube-sriov-device-plugin-arm64-m9qfk\" (UID: \"60790acf-e637-43a9-892b-6c
+f59b0cb4a1\") " pod="kube-system/kube-sriov-device-plugin-arm64-m9qfk"
+May 20 12:46:27 ip-10-0-120-194 kubelet-eks.daemon[11016]: I0520 12:46:27.757531   11016 reconciler_common.go:251] "operationExecutor.VerifyControllerAttachedVolume started for volume \"d
+evice-info\" (UniqueName: \"kubernetes.io/host-path/60790acf-e637-43a9-892b-6cf59b0cb4a1-device-info\") pod \"kube-sriov-device-plugin-arm64-m9qfk\" (UID: \"60790acf-e637-43a9-892b-6cf59b
+0cb4a1\") " pod="kube-system/kube-sriov-device-plugin-arm64-m9qfk"
+May 20 12:46:28 ip-10-0-120-194 kubelet-eks.daemon[11016]: I0520 12:46:28.465038   11016 pod_startup_latency_tracker.go:104] "Observed pod startup duration" pod="kube-system/kube-sriov-de
+vice-plugin-arm64-m9qfk" podStartSLOduration=1.4650256320000001 podStartE2EDuration="1.465025632s" podCreationTimestamp="2025-05-20 12:46:27 +0000 UTC" firstStartedPulling="0001-01-01 00:
+00:00 +0000 UTC" lastFinishedPulling="0001-01-01 00:00:00 +0000 UTC" observedRunningTime="2025-05-20 12:46:28.463586019 +0000 UTC m=+27382.125258139" watchObservedRunningTime="2025-05-20
+12:46:28.465025632 +0000 UTC m=+27382.126697743"
+May 20 12:46:28 ip-10-0-120-194 kubelet-eks.daemon[11016]: I0520 12:46:28.500563   11016 kubelet_volumes.go:163] "Cleaned up orphaned pod volumes dir" podUID="78b42713-0d24-49a7-9082-23bd
+95dc2d60" path="/var/lib/kubelet/pods/78b42713-0d24-49a7-9082-23bd95dc2d60/volumes"
+May 20 12:46:29 ip-10-0-120-194 kubelet-eks.daemon[11016]: I0520 12:46:29.472069   11016 state_mem.go:80] "Updated desired CPUSet" podUID="60790acf-e637-43a9-892b-6cf59b0cb4a1" containerN
+ame="kube-sriovdp" cpuSet="0-63"
+root@ip-10-0-120-194:~#
 
-root@ip-10-0-127-239:~# systemctl stop snap.kubelet-eks.daemon.service
-root@ip-10-0-127-239:~# systemctl start snap.kubelet-eks.daemon.service
-root@ip-10-0-127-239:~# systemctl status snap.kubelet-eks.daemon.service
+root@ip-10-0-120-194:~# systemctl stop snap.kubelet-eks.daemon.service
+root@ip-10-0-120-194:~# systemctl start snap.kubelet-eks.daemon.service
+root@ip-10-0-120-194:~# systemctl status snap.kubelet-eks.daemon.service
