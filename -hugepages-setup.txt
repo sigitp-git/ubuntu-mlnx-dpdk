@@ -213,3 +213,30 @@ root@ip-10-0-127-67:~#
 root@ip-10-0-127-67:~# systemctl stop snap.kubelet-eks.daemon.service
 root@ip-10-0-127-67:~# systemctl start snap.kubelet-eks.daemon.service
 root@ip-10-0-127-67:~# systemctl status snap.kubelet-eks.daemon.service
+
+## working without reboot
+ubuntu@cloud9-sigitp2:~$ kubectl describe node ip-10-0-127-67.ec2.internal
+...
+Capacity:
+  amazon.com/bmn-mlx-sriov-pf1:  8
+  amazon.com/bmn-mlx-sriov-pf2:  8
+  cpu:                           64
+  ephemeral-storage:             908274368Ki
+  hugepages-1Gi:                 32Gi
+  hugepages-2Mi:                 64Mi
+  hugepages-32Mi:                0
+  hugepages-64Ki:                0
+  memory:                        263378616Ki
+  pods:                          737
+Allocatable:
+  amazon.com/bmn-mlx-sriov-pf1:  8
+  amazon.com/bmn-mlx-sriov-pf2:  8
+  cpu:                           63770m
+  ephemeral-storage:             835991914339
+  hugepages-1Gi:                 32Gi
+  hugepages-2Mi:                 64Mi
+  hugepages-32Mi:                0
+  hugepages-64Ki:                0
+  memory:                        221093560Ki
+  pods:                          737
+...
