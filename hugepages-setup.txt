@@ -1,0 +1,119 @@
+## AL2023
+==============
+[root@ip-10-0-48-74]# sudo sed -i 's/selinux=1/& default_hugepagesz=1GB hugepagesz=1G hugepages=32/g' /etc/default/grub
+[root@ip-10-0-48-74]# sudo grub2-mkconfig -o /boot/grub2/grub.cfg
+
+[root@ip-10-0-48-74 bin]# sysctl -w vm.nr_hugepages=32
+vm.nr_hugepages = 32
+[root@ip-10-0-48-74 bin]#
+
+[root@ip-10-0-48-74 bin]# echo "vm.nr_hugepages=32" >> /etc/sysctl.conf
+[root@ip-10-0-48-74 bin]# cat /etc/sysctl.conf
+fs.inotify.max_user_watches=524288
+fs.inotify.max_user_instances=8192
+vm.max_map_count=524288
+kernel.pid_max=4194304
+vm.nr_hugepages=32
+[root@ip-10-0-48-74 bin]#
+
+[root@ip-10-0-48-74 bin]# grep HugePages_Total /proc/meminfo
+HugePages_Total:      32
+[root@ip-10-0-48-74 bin]#
+
+[root@ip-10-0-48-74 bin]# grep HugePages_Free /proc/meminfo
+HugePages_Free:       24
+[root@ip-10-0-48-74 bin]#
+
+[root@ip-10-0-48-74 bin]# grep MemFree /proc/meminfo
+MemFree:        1012834412 kB
+[root@ip-10-0-48-74 bin]#
+
+[root@ip-10-0-48-74 ~]# systemctl restart kubelet
+
+[root@ip-10-0-48-74 ~]# systemctl status kubelet
+● kubelet.service - Kubernetes Kubelet
+     Loaded: loaded (/etc/systemd/system/kubelet.service; disabled; preset: disabled)
+     Active: active (running) since Fri 2025-01-10 19:11:19 UTC; 3s ago
+       Docs: https://github.com/kubernetes/kubernetes
+    Process: 3535355 ExecStartPre=/sbin/iptables -P FORWARD ACCEPT -w 5 (code=exited, status=0/SUCCESS)
+   Main PID: 3535357 (kubelet)
+      Tasks: 32 (limit: 629145)
+     Memory: 51.5M
+        CPU: 1.165s
+     CGroup: /runtime.slice/kubelet.service
+             └─3535357 /usr/bin/kubelet --cloud-provider=external --hostname-override=ip-10-0-48-74.ec2.internal --config=/etc/kubernetes/kubelet/config.json --config-dir=/etc/kubernetes/kubelet/config.json.d --kubeconfig=/var/lib/kube>
+
+Jan 10 19:11:21 ip-10-0-48-74.ec2.internal kubelet[3535357]: I0110 19:11:21.512711 3535357 operation_generator.go:664] "MountVolume.MountDevice succeeded for volume \"pvc-0f7e3000-e177-451a-8b37-d30b4ecee2a3\" (UniqueName: \"kubernetes>
+Jan 10 19:11:21 ip-10-0-48-74.ec2.internal kubelet[3535357]: I0110 19:11:21.594421 3535357 operation_generator.go:721] "MountVolume.SetUp succeeded for volume \"pvc-0f7e3000-e177-451a-8b37-d30b4ecee2a3\" (UniqueName: \"kubernetes.io/cs>
+Jan 10 19:11:21 ip-10-0-48-74.ec2.internal kubelet[3535357]: I0110 19:11:21.804827 3535357 kubelet.go:2545] "SyncLoop (probe)" probe="readiness" status="" pod="prometheus/prometheus-for-amp-prometheus-pushgateway-7697947457-xhk9b"
+Jan 10 19:11:21 ip-10-0-48-74.ec2.internal kubelet[3535357]: I0110 19:11:21.805434 3535357 kubelet.go:2545] "SyncLoop (probe)" probe="readiness" status="ready" pod="prometheus/prometheus-for-amp-prometheus-pushgateway-7697947457-xhk9b"
+Jan 10 19:11:22 ip-10-0-48-74.ec2.internal kubelet[3535357]: I0110 19:11:22.496383 3535357 kubelet.go:2545] "SyncLoop (probe)" probe="startup" status="unhealthy" pod="prometheus/prometheus-for-amp-server-0"
+Jan 10 19:11:22 ip-10-0-48-74.ec2.internal kubelet[3535357]: I0110 19:11:22.629558 3535357 kubelet.go:2545] "SyncLoop (probe)" probe="readiness" status="" pod="longhorn-system/longhorn-manager-s8qfr"
+Jan 10 19:11:22 ip-10-0-48-74.ec2.internal kubelet[3535357]: I0110 19:11:22.630592 3535357 kubelet.go:2545] "SyncLoop (probe)" probe="readiness" status="ready" pod="longhorn-system/longhorn-manager-s8qfr"
+Jan 10 19:11:22 ip-10-0-48-74.ec2.internal kubelet[3535357]: I0110 19:11:22.954539 3535357 kubelet.go:2545] "SyncLoop (probe)" probe="readiness" status="" pod="prometheus/prometheus-for-amp-server-0"
+Jan 10 19:11:22 ip-10-0-48-74.ec2.internal kubelet[3535357]: I0110 19:11:22.954581 3535357 prober_manager.go:312] "Failed to trigger a manual run" probe="Readiness"
+Jan 10 19:11:22 ip-10-0-48-74.ec2.internal kubelet[3535357]: I0110 19:11:22.955166 3535357 kubelet.go:2545] "SyncLoop (probe)" probe="readiness" status="ready" pod="prometheus/prometheus-for-amp-server-0"
+
+## UBUNTU
+==============
+root@ip-10-0-127-239:~# sudo sed -i 's/selinux=1/& default_hugepagesz=1GB hugepagesz=1G hugepages=32/g' /etc/default/grub
+root@ip-10-0-127-239:~# sudo grub-mkconfig -o /boot/grub/grub.cfg
+
+root@ip-10-0-127-239:~# sysctl -w vm.nr_hugepages=32
+vm.nr_hugepages = 32
+
+root@ip-10-0-127-239:~# echo "vm.nr_hugepages=32" >> /etc/sysctl.conf
+root@ip-10-0-127-239:~# cat /etc/sysctl.conf | grep huge
+vm.nr_hugepages=32
+
+root@ip-10-0-127-239:~# grep HugePages_Total /proc/meminfo
+HugePages_Total:      32
+root@ip-10-0-127-239:~# grep HugePages_Free /proc/meminfo
+HugePages_Free:       32
+
+root@ip-10-0-127-239:~# systemctl status snap.kubelet-eks.daemon.service
+● snap.kubelet-eks.daemon.service - Service for snap application kubelet-eks.daemon
+     Loaded: loaded (/etc/systemd/system/snap.kubelet-eks.daemon.service; enabled; vendor preset: enabled)
+     Active: active (running) since Wed 2025-05-14 16:45:42 UTC; 5 days ago
+   Main PID: 11007 (kubelet)
+      Tasks: 73 (limit: 308632)
+     Memory: 158.0M
+        CPU: 2h 45min 58.166s
+     CGroup: /system.slice/snap.kubelet-eks.daemon.service
+             └─11007 /snap/kubelet-eks/259/kubelet --node-labels=node.longhorn.io/create-default-disk=true,storage=longhorn,is_worker=true,feature.node.kubernetes.io/network-sriov.capable
+=true --topology-manager-policy=single-numa-node --cpu-manager-policy=static --address=0.0.0.0 --anonymous-auth=false --authentication-token-webhook --authorization-mode=Webhook --cgroup-
+driver=systemd --client-ca-file=/etc/kubernetes/pki/ca.crt --cloud-provider=external --cluster-dns=172.20.0.10 --cluster-domain=cluster.local --config=/etc/kubernetes/kubelet/kubelet-conf
+ig.json --container-runtime-endpoint=unix:///run/containerd/containerd.sock --feature-gates=RotateKubeletServerCertificate=true --hostname-override=ip-10-0-127-239.ec2.internal --image-cr
+edential-provider-bin-dir=/etc/eks/ecr-credential-provider --image-credential-provider-config=/etc/eks/ecr-credential-provider/config.json --kubeconfig=/var/lib/kubelet/kubeconfig --node-
+ip=10.0.127.239 --pod-infra-container-image=public.ecr.aws/eks-distro/kubernetes/pause:3.5 --register-node --resolv-conf=/run/systemd/resolve/resolv.conf
+
+May 20 02:49:02 ip-10-0-127-239 kubelet-eks.daemon[11007]: I0520 02:49:02.183539   11007 scope.go:117] "RemoveContainer" containerID="2a25fc00803ba5321eb0fbcde9dca5597a743abbc8b1136b776ee
+77ed0f96e53"
+May 20 02:49:02 ip-10-0-127-239 kubelet-eks.daemon[11007]: E0520 02:49:02.183669   11007 pod_workers.go:1301] "Error syncing pod, skipping" err="failed to \"StartContainer\" for \"aws-eks
+-nodeagent\" with CrashLoopBackOff: \"back-off 5m0s restarting failed container=aws-eks-nodeagent pod=aws-node-s572p_kube-system(1e3e05c5-dd1f-455e-8956-e40e068478ed)\"" pod="kube-system/
+aws-node-s572p" podUID="1e3e05c5-dd1f-455e-8956-e40e068478ed"
+May 20 02:49:14 ip-10-0-127-239 kubelet-eks.daemon[11007]: I0520 02:49:14.183061   11007 scope.go:117] "RemoveContainer" containerID="2a25fc00803ba5321eb0fbcde9dca5597a743abbc8b1136b776ee
+77ed0f96e53"
+May 20 02:49:14 ip-10-0-127-239 kubelet-eks.daemon[11007]: E0520 02:49:14.183186   11007 pod_workers.go:1301] "Error syncing pod, skipping" err="failed to \"StartContainer\" for \"aws-eks
+-nodeagent\" with CrashLoopBackOff: \"back-off 5m0s restarting failed container=aws-eks-nodeagent pod=aws-node-s572p_kube-system(1e3e05c5-dd1f-455e-8956-e40e068478ed)\"" pod="kube-system/
+aws-node-s572p" podUID="1e3e05c5-dd1f-455e-8956-e40e068478ed"
+May 20 02:49:26 ip-10-0-127-239 kubelet-eks.daemon[11007]: I0520 02:49:26.183025   11007 scope.go:117] "RemoveContainer" containerID="2a25fc00803ba5321eb0fbcde9dca5597a743abbc8b1136b776ee
+77ed0f96e53"
+May 20 02:49:26 ip-10-0-127-239 kubelet-eks.daemon[11007]: E0520 02:49:26.183150   11007 pod_workers.go:1301] "Error syncing pod, skipping" err="failed to \"StartContainer\" for \"aws-eks
+-nodeagent\" with CrashLoopBackOff: \"back-off 5m0s restarting failed container=aws-eks-nodeagent pod=aws-node-s572p_kube-system(1e3e05c5-dd1f-455e-8956-e40e068478ed)\"" pod="kube-system/
+aws-node-s572p" podUID="1e3e05c5-dd1f-455e-8956-e40e068478ed"
+May 20 02:49:38 ip-10-0-127-239 kubelet-eks.daemon[11007]: I0520 02:49:38.185171   11007 scope.go:117] "RemoveContainer" containerID="2a25fc00803ba5321eb0fbcde9dca5597a743abbc8b1136b776ee
+77ed0f96e53"
+May 20 02:49:38 ip-10-0-127-239 kubelet-eks.daemon[11007]: E0520 02:49:38.185298   11007 pod_workers.go:1301] "Error syncing pod, skipping" err="failed to \"StartContainer\" for \"aws-eks
+-nodeagent\" with CrashLoopBackOff: \"back-off 5m0s restarting failed container=aws-eks-nodeagent pod=aws-node-s572p_kube-system(1e3e05c5-dd1f-455e-8956-e40e068478ed)\"" pod="kube-system/
+aws-node-s572p" podUID="1e3e05c5-dd1f-455e-8956-e40e068478ed"
+May 20 02:49:53 ip-10-0-127-239 kubelet-eks.daemon[11007]: I0520 02:49:53.183100   11007 scope.go:117] "RemoveContainer" containerID="2a25fc00803ba5321eb0fbcde9dca5597a743abbc8b1136b776ee
+77ed0f96e53"
+May 20 02:49:53 ip-10-0-127-239 kubelet-eks.daemon[11007]: E0520 02:49:53.183220   11007 pod_workers.go:1301] "Error syncing pod, skipping" err="failed to \"StartContainer\" for \"aws-eks
+-nodeagent\" with CrashLoopBackOff: \"back-off 5m0s restarting failed container=aws-eks-nodeagent pod=aws-node-s572p_kube-system(1e3e05c5-dd1f-455e-8956-e40e068478ed)\"" pod="kube-system/
+aws-node-s572p" podUID="1e3e05c5-dd1f-455e-8956-e40e068478ed"
+root@ip-10-0-127-239:~#
+
+root@ip-10-0-127-239:~# systemctl stop snap.kubelet-eks.daemon.service
+root@ip-10-0-127-239:~# systemctl start snap.kubelet-eks.daemon.service
+root@ip-10-0-127-239:~# systemctl status snap.kubelet-eks.daemon.service
