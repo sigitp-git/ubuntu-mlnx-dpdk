@@ -174,3 +174,42 @@ EOF
 # Enable and start the service
 systemctl daemon-reload
 systemctl enable hugepages.service
+
+---
+## TESTING WITHOUT REBOOT
+
+root@ip-10-0-127-67:~# echo madvise > /sys/kernel/mm/transparent_hugepage/enabled
+
+root@ip-10-0-127-67:~# cat /sys/kernel/mm/transparent_hugepage/enabled
+always [madvise] never
+
+root@ip-10-0-127-67:~# echo 32 > /sys/kernel/mm/hugepages/hugepages-1048576kB/nr_hugepages
+root@ip-10-0-127-67:~# cat /sys/kernel/mm/hugepages/hugepages-1048576kB/nr_hugepages
+32
+
+root@ip-10-0-127-67:~#
+
+root@ip-10-0-127-67:~# cat /etc/sysctl.conf | grep huge
+root@ip-10-0-127-67:~#
+
+root@ip-10-0-127-67:~# sysctl -w vm.nr_hugepages=32
+vm.nr_hugepages = 32
+
+root@ip-10-0-127-67:~# echo "vm.nr_hugepages=32" >> /etc/sysctl.conf
+
+root@ip-10-0-127-67:~# cat /etc/sysctl.conf | grep huge
+vm.nr_hugepages=32
+
+root@ip-10-0-127-67:~# grep HugePages_Total /proc/meminfo
+HugePages_Total:      32
+
+root@ip-10-0-127-67:~# grep HugePages_Free /proc/meminfo
+HugePages_Free:       32
+
+root@ip-10-0-127-67:~# grep MemFree /proc/meminfo
+MemFree:        222480752 kB
+root@ip-10-0-127-67:~#
+
+root@ip-10-0-127-67:~# systemctl stop snap.kubelet-eks.daemon.service
+root@ip-10-0-127-67:~# systemctl start snap.kubelet-eks.daemon.service
+root@ip-10-0-127-67:~# systemctl status snap.kubelet-eks.daemon.service
