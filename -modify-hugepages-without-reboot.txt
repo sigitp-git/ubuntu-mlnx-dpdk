@@ -32,9 +32,14 @@ root@ip-10-0-127-67:~# grep MemFree /proc/meminfo
 MemFree:        222480752 kB
 root@ip-10-0-127-67:~#
 
+# Ubuntu EKS optimized kubelet restart
 root@ip-10-0-127-67:~# systemctl stop snap.kubelet-eks.daemon.service
 root@ip-10-0-127-67:~# systemctl start snap.kubelet-eks.daemon.service
 root@ip-10-0-127-67:~# systemctl status snap.kubelet-eks.daemon.service
+
+# AL2023 EKS optimized kubelet restart
+[root@ip-10-0-48-74 ~]# systemctl restart kubelet
+[root@ip-10-0-48-74 ~]# systemctl status kubelet
 
 ## working without reboot
 ubuntu@cloud9-sigitp2:~$ kubectl describe node ip-10-0-127-67.ec2.internal
