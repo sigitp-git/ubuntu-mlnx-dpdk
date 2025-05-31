@@ -1,0 +1,64 @@
+## MODIFYING HUGEPAGES WITHOUT REBOOT
+
+root@ip-10-0-127-67:~# echo madvise > /sys/kernel/mm/transparent_hugepage/enabled
+
+root@ip-10-0-127-67:~# cat /sys/kernel/mm/transparent_hugepage/enabled
+always [madvise] never
+
+root@ip-10-0-127-67:~# echo 32 > /sys/kernel/mm/hugepages/hugepages-1048576kB/nr_hugepages
+root@ip-10-0-127-67:~# cat /sys/kernel/mm/hugepages/hugepages-1048576kB/nr_hugepages
+32
+
+root@ip-10-0-127-67:~#
+
+root@ip-10-0-127-67:~# cat /etc/sysctl.conf | grep huge
+root@ip-10-0-127-67:~#
+
+root@ip-10-0-127-67:~# sysctl -w vm.nr_hugepages=32
+vm.nr_hugepages = 32
+
+root@ip-10-0-127-67:~# echo "vm.nr_hugepages=32" >> /etc/sysctl.conf
+
+root@ip-10-0-127-67:~# cat /etc/sysctl.conf | grep huge
+vm.nr_hugepages=32
+
+root@ip-10-0-127-67:~# grep HugePages_Total /proc/meminfo
+HugePages_Total:      32
+
+root@ip-10-0-127-67:~# grep HugePages_Free /proc/meminfo
+HugePages_Free:       32
+
+root@ip-10-0-127-67:~# grep MemFree /proc/meminfo
+MemFree:        222480752 kB
+root@ip-10-0-127-67:~#
+
+root@ip-10-0-127-67:~# systemctl stop snap.kubelet-eks.daemon.service
+root@ip-10-0-127-67:~# systemctl start snap.kubelet-eks.daemon.service
+root@ip-10-0-127-67:~# systemctl status snap.kubelet-eks.daemon.service
+
+## working without reboot
+ubuntu@cloud9-sigitp2:~$ kubectl describe node ip-10-0-127-67.ec2.internal
+...
+Capacity:
+  amazon.com/bmn-mlx-sriov-pf1:  8
+  amazon.com/bmn-mlx-sriov-pf2:  8
+  cpu:                           64
+  ephemeral-storage:             908274368Ki
+  hugepages-1Gi:                 32Gi
+  hugepages-2Mi:                 64Mi
+  hugepages-32Mi:                0
+  hugepages-64Ki:                0
+  memory:                        263378616Ki
+  pods:                          737
+Allocatable:
+  amazon.com/bmn-mlx-sriov-pf1:  8
+  amazon.com/bmn-mlx-sriov-pf2:  8
+  cpu:                           63770m
+  ephemeral-storage:             835991914339
+  hugepages-1Gi:                 32Gi
+  hugepages-2Mi:                 64Mi
+  hugepages-32Mi:                0
+  hugepages-64Ki:                0
+  memory:                        221093560Ki
+  pods:                          737
+...
