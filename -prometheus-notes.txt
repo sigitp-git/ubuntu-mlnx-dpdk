@@ -1,0 +1,17 @@
+SRIOV TX GBPS
+rate(sriov_vf_tx_bytes[2m])*8/(1024*1024*1024)
+
+SRIOV TX MPPS
+(rate(sriov_vf_tx_packets[2m]))/(1024*1024)
+
+SRIOV RX GBPS
+rate(sriov_vf_rx_bytes[2m])*8/(1024*1024*1024)
+
+SRIOV RX MPPS
+(rate(sriov_vf_rx_packets[2m]))/(1024*1024)
+
+NODE CPU UTIL
+100 * avg(1 - rate(node_cpu_seconds_total{mode="idle"}[2m])) by (instance)
+
+NODE MEM UTIL
+((node_memory_MemTotal_bytes - node_memory_MemAvailable_bytes) / node_memory_MemTotal_bytes) * 100
