@@ -39,3 +39,7 @@ Increasing the resolution does not affect the irate function because the last tw
 =======================
 Node and workload efficiency plus metrics:
 https://docs.aws.amazon.com/eks/latest/best-practices/node_and_workload_efficiency.html
+
+
+======================
+Grafana: https://grafana.com/grafana/dashboards/1860-node-exporter-full/
