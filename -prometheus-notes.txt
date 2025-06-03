@@ -15,3 +15,23 @@ NODE CPU UTIL
 
 NODE MEM UTIL
 ((node_memory_MemTotal_bytes - node_memory_MemAvailable_bytes) / node_memory_MemTotal_bytes) * 100
+
+
+========================
+rate vs irate
+
+Let’s say you have a counter with these values observed at 1m intervals:
+
+0
+60
+120
+600
+720
+780
+Now rate over 5m will be:
+
+(780-0)/5/60 = 2.6/sec
+And irate over 5m will be (only last two data points are used which happen to be only 1m apart)
+
+(780-720)/1/60 = 1/sec
+Increasing the resolution does not affect the irate function because the last two observed values do not change when you look further back.
