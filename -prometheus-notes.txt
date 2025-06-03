@@ -35,3 +35,7 @@ And irate over 5m will be (only last two data points are used which happen to be
 
 (780-720)/1/60 = 1/sec
 Increasing the resolution does not affect the irate function because the last two observed values do not change when you look further back.
+
+=======================
+Node and workload efficiency plus metrics:
+https://docs.aws.amazon.com/eks/latest/best-practices/node_and_workload_efficiency.html
