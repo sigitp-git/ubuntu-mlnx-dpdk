@@ -168,6 +168,51 @@ kubectl get pods --no-headers | grep -E "(mg-pod|lb-bgp-pod)" | awk '{print $1}'
 
 The performance testing is now running entirely within the pods, creating a true full mesh network performance test without consuming any resources from your localhost. Each pod is testing connectivity and throughput to all other pods continuously.
 
+## Prometheus SR-IOV Metrics Configuration
+
+### Issue
+The Prometheus configuration tries to scrape SR-IOV metrics directly from nodes on port 9808, but the SR-IOV metrics are actually exposed through a service in the monitoring namespace.
+
+### Problem Configuration
+```yaml
+- job_name: 'sriov-metrics'
+  kubernetes_sd_configs:
+    - role: node  # This tries to scrape nodes directly
+  relabel_configs:
+    - source_labels: [__address__]
+      action: replace
+      regex: ([^:]+):.*
+      replacement: $1:9808  # This assumes port 9808 is on the node
+      target_label: __address__
+```
+
+### Solution 1: Service-based Configuration
+```yaml
+- job_name: 'sriov-metrics'
+  kubernetes_sd_configs:
+    - role: service
+  relabel_configs:
+    - source_labels: [__meta_kubernetes_service_name]
+      action: keep
+      regex: sriov-network-metrics-exporter
+    - source_labels: [__meta_kubernetes_namespace]
+      action: keep
+      regex: monitoring
+```
+
+### Solution 2: Service Annotation Approach
+```yaml
+- job_name: 'sriov-metrics'
+  kubernetes_sd_configs:
+    - role: service
+  relabel_configs:
+    - source_labels: [__meta_kubernetes_service_annotation_prometheus_io_target]
+      action: keep
+      regex: true
+```
+
+The service already has the annotation `prometheus.io/target: true`, so it should be discovered by your existing `kubernetes-services` job if you add the `prometheus.io/scrape: true` annotation to the service.
+
 ## Notes
 
 - **Whereabouts IPAM**: Disabled due to corruption issues, use static IP allocation
