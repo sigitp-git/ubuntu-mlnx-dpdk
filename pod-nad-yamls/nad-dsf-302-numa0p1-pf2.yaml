@@ -3,7 +3,7 @@ kind: NetworkAttachmentDefinition
 metadata:
   name: dsf-302-numa0p1-pf2
   annotations:
-    k8s.v1.cni.cncf.io/resourceName: kinara.com/bmn-mlx-sriov-pf2
+    k8s.v1.cni.cncf.io/resourceName: aws-cse-lc-bundle/mlnx_sriov_netdevice 
 spec:
   config: '{
   "type": "sriov",
@@ -12,11 +12,7 @@ spec:
   "vlan": 302,
   "logLevel": "debug",
   "ipam": {
-        "type": "whereabouts",
-        "range": "169.10.2.0/24",
-        "exclude": [
-            "169.10.2.1/32",
-            "169.10.2.254/32"
-            ]
+        "type": "static",
+        "addresses": [{"address": "169.30.1.100/24"}]
       }
 }'
