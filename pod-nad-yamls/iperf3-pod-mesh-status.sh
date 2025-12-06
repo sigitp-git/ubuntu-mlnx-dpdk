@@ -68,9 +68,7 @@ done
 
 # Start testing
 echo "Starting tests on all pods..."
-for pod in "${PODS[@]}"; do
-    kubectl exec $pod -- bash -c "nohup /tmp/simple-mesh-test.sh > /tmp/test.log 2>&1 &" &
-done
+kubectl get pods --no-headers | grep -E "(mg-pod|lb-bgp-pod)" | awk '{print $1}' | xargs -I {} kubectl exec {} -- bash -c "nohup /tmp/simple-mesh-test.sh > /tmp/test.log 2>&1 &"
 
 echo "Pod-based testing started! Monitoring status..."
 echo "To stop: kubectl get pods --no-headers | grep -E '(mg-pod|lb-bgp-pod)' | awk '{print \$1}' | xargs -I {} kubectl exec {} -- pkill -f simple-mesh-test.sh"
