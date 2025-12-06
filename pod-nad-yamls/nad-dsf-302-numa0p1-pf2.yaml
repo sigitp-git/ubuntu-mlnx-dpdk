@@ -1,0 +1,22 @@
+apiVersion: "k8s.cni.cncf.io/v1"
+kind: NetworkAttachmentDefinition
+metadata:
+  name: dsf-302-numa0p1-pf2
+  annotations:
+    k8s.v1.cni.cncf.io/resourceName: kinara.com/bmn-mlx-sriov-pf2
+spec:
+  config: '{
+  "type": "sriov",
+  "cniVersion": "0.3.1",
+  "name": "sriov-network",
+  "vlan": 302,
+  "logLevel": "debug",
+  "ipam": {
+        "type": "whereabouts",
+        "range": "169.10.2.0/24",
+        "exclude": [
+            "169.10.2.1/32",
+            "169.10.2.254/32"
+            ]
+      }
+}'

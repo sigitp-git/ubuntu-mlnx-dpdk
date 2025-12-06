@@ -1,0 +1,30 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: mg-pod4-node1
+  annotations:
+    k8s.v1.cni.cncf.io/networks: dsf-301-numa0p0-pf1, dsf-301-numa0p0-pf1, dsf-302-numa0p1-pf2, dsf-302-numa0p1-pf2
+spec:
+  containers:
+  - name:  ubuntu-netutils
+    image: 291615555612.dkr.ecr.us-east-1.amazonaws.com/sigitp-ecr:ubuntu-netutils
+    imagePullPolicy: IfNotPresent
+    securityContext:
+      privileged: true
+      capabilities:
+        add: ["NET_ADMIN", "SYS_TIME"]
+    command: [ "/bin/bash", "-c", "--" ]
+    args: [ "while true; do sleep 300000; done;" ]
+    resources:
+      requests:
+        cpu: 1
+        memory: 1Gi
+        kinara.com/bmn-mlx-sriov-pf1: '2'
+        kinara.com/bmn-mlx-sriov-pf2: '2'
+      limits:
+        cpu: 1
+        memory: 1Gi
+        kinara.com/bmn-mlx-sriov-pf1: '2'
+        kinara.com/bmn-mlx-sriov-pf2: '2'
+  nodeSelector:
+    kubernetes.io/hostname: ip-10-0-56-196.ec2.internal
