@@ -170,48 +170,98 @@ The performance testing is now running entirely within the pods, creating a true
 
 ## Prometheus SR-IOV Metrics Configuration
 
-### Issue
-The Prometheus configuration tries to scrape SR-IOV metrics directly from nodes on port 9808, but the SR-IOV metrics are actually exposed through a service in the monitoring namespace.
+### Issue Resolution (2025-12-06)
+Amazon Managed Prometheus agentless scraper connectivity issues fully resolved.
 
-### Problem Configuration
+**Status**: ✅ **COMPLETE SUCCESS** - SR-IOV metrics now flowing into AMP workspace from both nodes
+
+**Root Cause**: 
+1. Missing security group rules for both EKS control plane and worker node security groups
+2. AMP scraper cannot resolve Kubernetes service DNS names
+3. Service needed NodePort exposure for external scraper access
+
+**Actions Taken**:
+1. Added security group rules allowing scraper (sg-035c5b3312c98286c) access to ports 9808 and 30808
+   - EKS control plane security group: sg-01b44349ba5abba73
+   - Worker node security group: sg-0470d60e559c65f7d (critical missing piece)
+2. Changed service type from ClusterIP to NodePort (port 30808)
+3. Updated scraper configuration to use node-based discovery instead of service discovery
+4. Added required service annotations: `prometheus.io/port: "9808"` and `prometheus.io/path: "/metrics"`
+
+**Final Status**: 
+- ✅ Both nodes operational: ip-100-77-4-181.ec2.internal and ip-100-77-4-183.ec2.internal
+- ✅ 32+ SR-IOV VF metrics per node flowing into AMP workspace
+- ✅ Comprehensive VF statistics: rx_bytes, tx_bytes, rx_packets, tx_packets, device assignments
+
+### Network Configuration Changes
+- **Security Group Rules**: Added ingress rules for ports 9808 and 30808 to both security groups
+- **Service Type**: Changed to NodePort exposing port 30808 on all nodes
+- **Scraper Access**: Now uses node IPs matching successful node-exporter pattern
+
+### Updated Prometheus Job Configuration
+The `sriov-metrics` job now uses node-based discovery:
+
 ```yaml
 - job_name: 'sriov-metrics'
   kubernetes_sd_configs:
-    - role: node  # This tries to scrape nodes directly
+    - role: node
   relabel_configs:
     - source_labels: [__address__]
       action: replace
       regex: ([^:]+):.*
-      replacement: $1:9808  # This assumes port 9808 is on the node
+      replacement: $1:30808
       target_label: __address__
+    - source_labels: [__meta_kubernetes_node_name]
+      action: replace
+      target_label: instance
 ```
 
-### Solution 1: Service-based Configuration
-```yaml
-- job_name: 'sriov-metrics'
-  kubernetes_sd_configs:
-    - role: service
-  relabel_configs:
-    - source_labels: [__meta_kubernetes_service_name]
-      action: keep
-      regex: sriov-network-metrics-exporter
-    - source_labels: [__meta_kubernetes_namespace]
-      action: keep
-      regex: monitoring
+### Available SR-IOV Metrics in AMP
+The exporter provides comprehensive SR-IOV metrics including:
+- `sriov_vf_rx_bytes` - Virtual Function receive bytes (32+ VFs per node)
+- `sriov_vf_tx_bytes` - Virtual Function transmit bytes  
+- `sriov_vf_rx_packets` - Virtual Function receive packets
+- `sriov_vf_tx_packets` - Virtual Function transmit packets
+- `sriov_vf_rx_dropped` - Virtual Function receive drops
+- `sriov_vf_tx_dropped` - Virtual Function transmit drops
+- `sriov_kubepoddevice` - Pod device assignments
+- `sriov_kubepodcpu` - Pod CPU assignments
+- `sriov_cpu_info` - CPU topology information
+
+### Verification Commands
+```bash
+# Query SR-IOV metrics in AMP workspace ws-178241d1-8310-4111-8b71-fc77f7b501a2
+aws amp query --workspace-id ws-178241d1-8310-4111-8b71-fc77f7b501a2 --query-string 'up{job="sriov-metrics"}' --region us-east-1
+aws amp query --workspace-id ws-178241d1-8310-4111-8b71-fc77f7b501a2 --query-string 'sriov_vf_rx_bytes' --region us-east-1
+
+# Check service configuration
+kubectl get service sriov-network-metrics-exporter -n monitoring -o yaml
+kubectl get pods -n monitoring -l app.kubernetes.io/name=sriov-network-metrics-exporter
 ```
 
-### Solution 2: Service Annotation Approach
-```yaml
-- job_name: 'sriov-metrics'
-  kubernetes_sd_configs:
-    - role: service
-  relabel_configs:
-    - source_labels: [__meta_kubernetes_service_annotation_prometheus_io_target]
-      action: keep
-      regex: true
-```
+### Available SR-IOV Metrics
+The exporter provides comprehensive SR-IOV metrics including:
+- `sriov_vf_rx_bytes` - Virtual Function receive bytes
+- `sriov_vf_tx_bytes` - Virtual Function transmit bytes  
+- `sriov_vf_rx_packets` - Virtual Function receive packets
+- `sriov_vf_tx_packets` - Virtual Function transmit packets
+- `sriov_vf_rx_dropped` - Virtual Function receive drops
+- `sriov_vf_tx_dropped` - Virtual Function transmit drops
+- `sriov_kubepoddevice` - Pod device assignments
+- `sriov_kubepodcpu` - Pod CPU assignments
+- `sriov_cpu_info` - CPU topology information
 
-The service already has the annotation `prometheus.io/target: true`, so it should be discovered by your existing `kubernetes-services` job if you add the `prometheus.io/scrape: true` annotation to the service.
+### Verification Commands
+```bash
+# Check service annotations
+kubectl get service sriov-network-metrics-exporter -n monitoring -o yaml | grep -A5 annotations
+
+# Test metrics endpoint directly
+kubectl run test-curl --rm -i --tty --image=curlimages/curl -- curl -s http://sriov-network-metrics-exporter.monitoring.svc.cluster.local:9808/metrics | grep sriov
+
+# Query metrics in AMP workspace
+# Use PromQL: sriov_vf_rx_bytes
+```
 
 ## Notes
 
